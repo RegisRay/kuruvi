@@ -1,10 +1,12 @@
 // view a single form
-'use-client';
+'use client';
+import { Card } from 'react-bootstrap';
 
 const Form = () => {
   return (
     <>
       <section>
+        <h2>Create Form</h2>
         <Card style={{ width: '18rem' }}>
           <Card.Body>
             <Card.Title>Card Title</Card.Title>

@@ -1,10 +1,16 @@
 import { AuthProvider } from 'src/components/AuthProvider';
 import createClient from 'src/lib/supabase-server';
+import { League_Spartan } from 'next/font/google';
 
 import 'src/styles/globals.scss';
 
 // do not cache this layout
 export const revalidate = 0;
+
+const ls = League_Spartan({
+  weight: '400',
+  subsets: ['latin'],
+});
 
 export default async function RootLayout({ children }) {
   const supabase = createClient();
@@ -17,15 +23,24 @@ export default async function RootLayout({ children }) {
 
   return (
     <html lang="en">
-      <body>
-        <div className="flex min-h-screen flex-col items-center justify-center py-2">
-          <main className="flex w-full flex-1 shrink-0 flex-col items-center justify-center px-8 text-center sm:px-20">
-            <h1 className="mb-12 text-5xl font-bold sm:text-6xl">
-              Next.js with <span className="font-black text-green-400">Supabase</span>
-            </h1>
-            <AuthProvider accessToken={accessToken}>{children}</AuthProvider>
-          </main>
-        </div>
+      <body className={ls.className}>
+        <main className="container py-3">
+          {/* header */}
+          <h1 className="text-center">
+            <span>Kuruvi 🐦</span>
+          </h1>
+          <AuthProvider accessToken={accessToken}>
+            {/* main content */}
+            <div className="my-3">{children}</div>
+          </AuthProvider>
+          {/* footer */}
+          <footer>
+            <p className="d-flex flex-column justify-content-center align-items-center">
+              <hr className="w-50" />
+              <small>Made with ❤️ by team Survey Kuruvi.</small>
+            </p>
+          </footer>
+        </main>
       </body>
     </html>
   );
