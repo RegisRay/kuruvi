@@ -10,6 +10,13 @@
         "depth": 3
       }
     ],
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
+      }
+    ],
+
     "react-hooks/exhaustive-deps": "warn",
     "react/function-component-definition": "off",
     "react/jsx-no-bind": "off",
