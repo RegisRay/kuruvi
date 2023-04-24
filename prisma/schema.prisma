@@ -273,15 +273,6 @@ model profiles {
   @@schema("public")
 }
 
-// put all here
-model testing {
-  id    Int    @id @default(autoincrement())
-  name  String
-  email String
-
-  @@schema("public")
-}
-
 enum aal_level {
   aal1
   aal2
