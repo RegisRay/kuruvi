@@ -7,8 +7,12 @@ export const config = {
 // export const runtime = 'experimental-edge'
 
 export async function GET(request,{params}, response) {
+  //path parameter
   const { id } = params;
   console.log(id);
+  //Query parameter
+  const {searchParams} = new URL(request.url);
+  const uid = searchParams.get('uid');
   try {
     const user = await prisma.profiles.findUnique({
       where: {
@@ -37,6 +41,7 @@ export async function GET(request,{params}, response) {
 }
 
 export async function POST(request, response){
+  //body access
   const body = await request.json();
   console.log(body);
   try{
