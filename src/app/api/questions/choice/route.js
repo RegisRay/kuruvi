@@ -16,7 +16,7 @@ export async function GET(request, response){
             }
         })
         
-        response = new Response(JSON.stringify(choice),{
+        response = new Response(JSON.stringify({message: 'Choices fetched successfully', choice}),{
             status: 200,
             headers:{
                 'content-type':'application/json'
@@ -26,7 +26,7 @@ export async function GET(request, response){
     catch (error) {
         console.log(error);
         if ((error.code = 'P2025')) {
-          response = new Response(JSON.stringify({ error: 'User not found' }), {
+          response = new Response(JSON.stringify({ error: 'Question not found' }), {
             status: 404,
             headers: {
               'content-type': 'application/json',
@@ -64,7 +64,7 @@ export async function POST(request, response){
             }
         });
         
-        response = new Response(JSON.stringify(choice),{
+        response = new Response(JSON.stringify({message: 'Choice added successfully', choice}),{
             status:200,
             headers:{
                 'content-type':'application/json'
@@ -106,7 +106,7 @@ export async function DELETE(request, response){
             }
         });
         
-        response = new Response(JSON.stringify(choice),{
+        response = new Response(JSON.stringify({message: 'Choices deleted successfully', choice}),{
             status: 200,
             headers:{
                 'content-type':'application/json'
@@ -116,7 +116,7 @@ export async function DELETE(request, response){
     catch (error) {
         console.log(error);
         if ((error.code = 'P2025')) {
-          response = new Response(JSON.stringify({ error: 'Question not found' }), {
+          response = new Response(JSON.stringify({ error: 'Choice not found' }), {
             status: 404,
             headers: {
               'content-type': 'application/json',
@@ -155,7 +155,7 @@ export async function PUT(request, response){
             }
         });
         
-        response = new Response(JSON.stringify(choice),{
+        response = new Response(JSON.stringify({message: 'Choices updated successfully', choice}),{
             status: 200,
             headers:{
                 'content-type':'application/json'
@@ -165,7 +165,7 @@ export async function PUT(request, response){
     catch (error) {
         console.log(error);
         if ((error.code = 'P2025')) {
-          response = new Response(JSON.stringify({ error: 'Question not found' }), {
+          response = new Response(JSON.stringify({ error: 'Choice not found' }), {
             status: 404,
             headers: {
               'content-type': 'application/json',

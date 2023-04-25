@@ -19,7 +19,7 @@ export async function GET(request, response) {
       },
     });
 
-    response = new Response(JSON.stringify(user), {
+    response = new Response(JSON.stringify({message: 'Profile fetched successfully', user}), {
       status: 200,
       headers: {
         'content-type': 'application/json',
@@ -68,7 +68,7 @@ export async function PUT(request, response) {
     });
   
     console.log(user);
-    response = new Response(JSON.stringify({message: 'Profile Updated',user}), {
+    response = new Response(JSON.stringify({message: 'Profile Updated successfully',user}), {
       status: 200,
       headers: {
         'content-type': 'application/json',
