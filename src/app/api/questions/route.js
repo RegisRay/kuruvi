@@ -4,8 +4,8 @@ export const config = {
   runtime: 'experimental-edge',
 };
 
-// Example
-// URL: http://localhost:3000/api/forms/[id]/questions
+// GetQuestionsWithChoiceHandler
+// URL: http://localhost:3000/api/questions?fid=b9cd2345-73d9-4c31-9236-d99220ad7555
 
 export async function GET(request, response) {
   const { searchParams } = new URL(request.url);
@@ -16,37 +16,12 @@ export async function GET(request, response) {
       where: {
         form_id: fid,
       },
+      include:{
+        choice: true
+      }
     });
     
-    
-    let questionRes = [];
-
-    questions.map(async (quest,index)=>{
-      const choices = await prisma.choice.findMany({
-        where:{
-          question_id: quest.id
-        }
-      })
-      // questionRes.push({
-      //   id: quest.id,
-      //   form_id: quest.form_id,
-      //   content: quest.content,
-      //   type: quest.type,
-      //   choice: {choices}
-      // })
-      questionRes = [...questionRes, {
-        id: quest.id,
-        form_id: quest.form_id,
-        content: quest.content,
-        type: quest.type,
-        choice: {choices}
-      }]
-      console.log(questionRes)
-    })
-    console.log(questionRes, 'hello');
-    
-
-    response = new Response(JSON.stringify(questionRes), {
+    response = new Response( JSON.stringify(questions), {
       status: 200,
       headers: {
         'content-type': 'application/json',
@@ -72,6 +47,14 @@ export async function GET(request, response) {
   }
   return response;
 }
+
+//AddQuestionHandler
+//URL: http://localhost:3000/api/questions?fid=b9cd2345-73d9-4c31-9236-d99220ad7555
+//body: {
+//     "type":"choice",
+//     "content":"hello testing question?",
+//     "choice_name":"choice1"
+// }
 
 export async function POST(request, response) {
   const { searchParams } = new URL(request.url);
@@ -110,7 +93,7 @@ export async function POST(request, response) {
     }
   } catch (error) {
     if (error.code == 'P2025') {
-      response = new Response(JSON.stringify({ error: 'No forms found' }), {
+      response = new Response(JSON.stringify({ error: 'No question found' }), {
         status: 404,
         headers: {
           'content-type': 'application/json',
@@ -128,4 +111,96 @@ export async function POST(request, response) {
   }
 
   return response;
+}
+
+//DeleteQuestionHandler
+//URL: http://localhost:3000/api/questions?qid=6060ecc9-5dc4-415d-bae5-149a4b2a1d0a
+
+export async function DELETE(request, response){
+  const {searchParams} = new URL(request.url);
+  const qid = searchParams.get('qid');
+  console.log(qid)
+  try{
+    const question = await prisma.questions.delete({
+      where:{
+        id: qid
+      }
+    })
+    
+    response = new Response (JSON.stringify(question),{
+      status:200,
+      headers: {
+        'content-type': 'application/json'
+      }
+    })
+  }
+  catch(error){
+    if (error.code == 'P2025') {
+      response = new Response(JSON.stringify({ error: 'No forms found' }), {
+        status: 404,
+        headers: {
+          'content-type': 'application/json',
+        },
+      });
+    } else {
+      console.log(error);
+      response = new Response(JSON.stringify(error), {
+        status: 400,
+        headers: {
+          'content-type': 'application/json',
+        },
+      });
+    }
+  }
+  return response;
+}
+
+//UpdateQuestionHandler
+//URL:http://localhost:3000/api/questions?qid=9ea3875b-23d5-4a83-8c48-d055dcc7e9f8
+//body:{
+//     "content":"Update Tesing Question?",
+//     "type":"choice"
+// }
+
+export async function PUT(request, response){
+  const {searchParams} = new URL (request.url);
+  const qid = searchParams.get('qid');
+  const body = await request.json();
+  
+  try{
+    const question = await prisma.questions.update({
+      where:{
+        id:qid
+      },
+      data:{
+        ...body
+      },
+    });
+    
+    response = new Response(JSON.stringify({message:'Question updated',question}),{
+      status:200,
+      headers:{
+        'content-type':'application/json'
+      }
+    })
+  }
+  catch(error){
+    if (error.code == 'P2025') {
+      response = new Response(JSON.stringify({ error: 'No question found' }), {
+        status: 404,
+        headers: {
+          'content-type': 'application/json',
+        },
+      });
+    } else {
+      console.log(error);
+      response = new Response(JSON.stringify(error), {
+        status: 400,
+        headers: {
+          'content-type': 'application/json',
+        },
+      });
+    }
+  }
+  return response
 }

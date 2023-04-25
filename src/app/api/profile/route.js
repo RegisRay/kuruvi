@@ -66,8 +66,9 @@ export async function PUT(request, response) {
         ...body,
       },
     });
-
-    response = new Response(JSON.stringify(user), {
+  
+    console.log(user);
+    response = new Response(JSON.stringify({message: 'Profile Updated',user}), {
       status: 200,
       headers: {
         'content-type': 'application/json',
