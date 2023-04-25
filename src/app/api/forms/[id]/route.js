@@ -50,15 +50,14 @@ export async function GET(request, { params }, response) {
 
 export async function PUT(request, { params }, response) {
   const { id } = params;
-  const { name, description } = await request.json();
+  const body = await request.json();
   try {
     const form = await prisma.forms.update({
       where: {
         id,
       },
       data: {
-        name,
-        description,
+        ...body,
       },
     });
 
@@ -89,3 +88,6 @@ export async function PUT(request, { params }, response) {
 
   return response;
 }
+
+// Example
+// URL: http://localhost:3000/api/forms/[id]
