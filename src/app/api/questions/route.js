@@ -27,17 +27,23 @@ export async function GET(request, response) {
           question_id: quest.id
         }
       })
-    
-      questionRes.push({
+      // questionRes.push({
+      //   id: quest.id,
+      //   form_id: quest.form_id,
+      //   content: quest.content,
+      //   type: quest.type,
+      //   choice: {choices}
+      // })
+      questionRes = [...questionRes, {
         id: quest.id,
         form_id: quest.form_id,
         content: quest.content,
         type: quest.type,
         choice: {choices}
-      })
-      console.log(questionRes);
-      
+      }]
+      console.log(questionRes)
     })
+    console.log(questionRes, 'hello');
     
 
     response = new Response(JSON.stringify(questionRes), {
