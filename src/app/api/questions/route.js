@@ -17,8 +17,30 @@ export async function GET(request, response) {
         form_id: fid,
       },
     });
+    
+    
+    let questionRes = [];
 
-    response = new Response(JSON.stringify(questions), {
+    questions.map(async (quest,index)=>{
+      const choices = await prisma.choice.findMany({
+        where:{
+          question_id: quest.id
+        }
+      })
+    
+      questionRes.push({
+        id: quest.id,
+        form_id: quest.form_id,
+        content: quest.content,
+        type: quest.type,
+        choice: {choices}
+      })
+      console.log(questionRes);
+      
+    })
+    
+
+    response = new Response(JSON.stringify(questionRes), {
       status: 200,
       headers: {
         'content-type': 'application/json',
@@ -47,7 +69,7 @@ export async function GET(request, response) {
 
 export async function POST(request, response) {
   const { searchParams } = new URL(request.url);
-  const { question_type, question, choice_name } = await request.json();
+  const { type, content, choice_name } = await request.json();
   const fid = searchParams.get('fid');
 
   try {
@@ -61,8 +83,8 @@ export async function POST(request, response) {
       const question_db = await prisma.questions.create({
         data: {
           form_id: fid,
-          type: question_type,
-          content: question,
+          type,
+          content,
           choice: {
             create: {
               name: choice_name,
