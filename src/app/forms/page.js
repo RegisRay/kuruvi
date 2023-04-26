@@ -12,6 +12,7 @@ import Tooltip from 'react-bootstrap/Tooltip';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import { createForm, deleteForm, getAllForms } from '../services/form/service';
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 
 const Forms = () => {
   const [showmodal, setShowmodal] = useState(false);
@@ -19,44 +20,42 @@ const Forms = () => {
     title: null,
     description: null,
   });
-  
+
   const toggleshow = () => setShowmodal(!showmodal);
 
   const [forms, setForms] = useState([]);
   const [loading, setLoading] = useState(true);
   const uid = localStorage.getItem('uid');
-  
 
-  useEffect(() => {(
-      async () => {
-        const { data, error } = await getAllForms(uid);
-        if (data) {
-          setLoading(false);
-          console.log(data);
-          setForms(data.form);
-        }
+  useEffect(() => {
+    (async () => {
+      const { data, error } = await getAllForms(uid);
+      if (data) {
+        setLoading(false);
+        console.log('it is the retrived data ' + data.form);
+        setForms(data.form);
+        console.log('it is the retrived data ' + forms);
       }
-    )();
+    })();
   }, [forms.length]);
 
   const createsurvey = async () => {
     console.log(details);
-    const {data, error} = await createForm(uid, details);
-    if(data){
+    const { data, error } = await createForm(uid, details);
+    if (data) {
       console.log(data);
     }
   };
-  
-  const deleteSurvey = async (id) =>{
-    console.log("Delete triggered")
-    const {data, error} = await deleteForm(id);
-    if(data){
-      console.log(data)
+
+  const deleteSurvey = async (id) => {
+    console.log('Delete triggered');
+    const { data, error } = await deleteForm(id);
+    if (data) {
+      console.log(data);
+    } else {
+      console.log(error);
     }
-    else{
-    console.log(error)
-    }
-  }
+  };
 
   // console.log(data);
 
@@ -103,54 +102,62 @@ const Forms = () => {
         </Card>
         <div className="mt-4">
           <h2>Recent Forms</h2>
-          {loading? (<p>Loading..</p>):(
-          <>
-            <Table hover>
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>TITLE</th>
-                  <th className="text-end">DESCRIPTION</th>
-                  <th className="text-end">ACTIONS</th>
-                </tr>
-              </thead>
-              <tbody>
-                {forms.map((form, i) => (
-                  <tr key={i}>
-                    <td>{i+1}</td>
-                    <td>{form.name}</td>
-                    <td className="text-muted text-end">{form.description}</td>
-                    <td className="text-end">
-                      <OverlayTrigger placement="bottom" overlay={<Tooltip>Edit</Tooltip>}>
-                        <Button
-                          variant="light"
-                          size="sm"
-                          className="rounded-circle text-warning mx-2 shadow-sm"
-                        >
-                          <FaPencilAlt />
-                        </Button>
-                      </OverlayTrigger>
-                      <OverlayTrigger
-                        placement="bottom"
-                        overlay={<Tooltip>Delete</Tooltip>}
-                      >
-                        <Button
-                          variant="light"
-                          size="sm"
-                          className="rounded-circle text-danger mx-2 shadow-sm"
-                          onClick={()=>{deleteSurvey(form.id)}}  
-                        >
-                          <MdOutlineDeleteOutline />
-                        </Button>
-                      </OverlayTrigger>
-                    </td>
+          {loading ? (
+            <p>Loading..</p>
+          ) : (
+            <>
+              <Table hover>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>TITLE</th>
+                    <th className="text-end">DESCRIPTION</th>
+                    <th className="text-end">ACTIONS</th>
                   </tr>
-                ))}
-              </tbody>
-            </Table>
-          </>
+                </thead>
+                <tbody>
+                  {forms.map((form, i) => (
+                    <tr key={i}>
+                      <td>{i + 1}</td>
+                      <td>{form.name}</td>
+                      <td className="text-muted text-end">{form.description}</td>
+                      <td className="text-end">
+                        <OverlayTrigger
+                          placement="bottom"
+                          overlay={<Tooltip>Edit</Tooltip>}
+                        >
+                          <Button
+                            variant="light"
+                            size="sm"
+                            className="rounded-circle text-warning mx-2 shadow-sm"
+                          >
+                            <Link href={`/forms/${form.id}`}>
+                              <FaPencilAlt />
+                            </Link>
+                          </Button>
+                        </OverlayTrigger>
+                        <OverlayTrigger
+                          placement="bottom"
+                          overlay={<Tooltip>Delete</Tooltip>}
+                        >
+                          <Button
+                            variant="light"
+                            size="sm"
+                            className="rounded-circle text-danger mx-2 shadow-sm"
+                            onClick={() => {
+                              deleteSurvey(form.id);
+                            }}
+                          >
+                            <MdOutlineDeleteOutline />
+                          </Button>
+                        </OverlayTrigger>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            </>
           )}
-          
         </div>
       </section>
     </>

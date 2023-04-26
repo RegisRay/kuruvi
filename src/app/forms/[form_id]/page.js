@@ -1,7 +1,6 @@
 // view a single form
 'use client';
 import React, { useState } from 'react';
-import Link from 'next/link';
 
 const Form = () => {
   const [show, setShow] = useState(1);
@@ -26,7 +25,11 @@ const Form = () => {
           </button>
         </div>
         <div className="d-flex justify-content-center mt-5">
-          {show == 1 ? <div></div> : <div>this is form responses page.</div>}
+          {show == 1 ? (
+            <div>this is edit form page.</div>
+          ) : (
+            <div>this is form responses page.</div>
+          )}
         </div>
       </section>
     </>
