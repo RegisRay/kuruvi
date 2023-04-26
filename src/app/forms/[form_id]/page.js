@@ -1,9 +1,26 @@
 // view a single form
 'use client';
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
+import { getForm } from './service';
+import { Card } from 'react-bootstrap';
 
 const Form = () => {
+  const { form_id } = useParams();
+  console.log('this is form id ' + form_id);
   const [show, setShow] = useState(1);
+  const [form, setForm] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      const { data, error } = await getForm(form_id);
+      if (data) {
+        console.log('it is the retrived on id form ' + data.form);
+        setForm(data.form);
+      }
+    })();
+  }, [form.length]);
+
   return (
     <>
       <section>
@@ -26,7 +43,18 @@ const Form = () => {
         </div>
         <div className="d-flex justify-content-center mt-5">
           {show == 1 ? (
-            <div>this is edit form page.</div>
+            <div>
+              {form.map((item, i) => {
+                return (
+                  <Card key={i}>
+                    <Card.Body>
+                      <Card.Title>{item.name}</Card.Title>
+                      <Card.Text>{item.description}</Card.Text>
+                    </Card.Body>
+                  </Card>
+                );
+              })}
+            </div>
           ) : (
             <div>this is form responses page.</div>
           )}
