@@ -8,7 +8,7 @@ import Button from 'react-bootstrap/Button';
 import Tooltip from 'react-bootstrap/Tooltip';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import { getAllForms } from './service';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 
 const Forms = () => {
@@ -33,10 +33,10 @@ const Forms = () => {
       const {data, error} =await getAllForms(uid);
       if(data){
         console.log(data);
-      
+        setForms(data);
       }
-    })
-  });
+    })();
+  },[]);
 
   // console.log(data);
 
