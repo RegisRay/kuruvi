@@ -7,7 +7,7 @@ import { MdOutlineDeleteOutline } from 'react-icons/md';
 import Button from 'react-bootstrap/Button';
 import Tooltip from 'react-bootstrap/Tooltip';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
-import { getAllForms } from './service';
+import { getAllForms } from '../services/form/service';
 import { useState, useEffect } from 'react';
 
 const Forms = () => {
