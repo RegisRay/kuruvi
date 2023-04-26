@@ -16,17 +16,20 @@ export async function GET(request, response) {
       where: {
         form_id: fid,
       },
-      include:{
-        choice: true
-      }
-    });
-    
-    response = new Response( JSON.stringify({message: 'Questions fetched successfully', questions}), {
-      status: 200,
-      headers: {
-        'content-type': 'application/json',
+      include: {
+        choice: true,
       },
     });
+
+    response = new Response(
+      JSON.stringify({ message: 'Questions fetched successfully', questions }),
+      {
+        status: 200,
+        headers: {
+          'content-type': 'application/json',
+        },
+      }
+    );
   } catch (error) {
     console.log(error);
     if (error.code == 'P2025') {
@@ -84,12 +87,15 @@ export async function POST(request, response) {
 
       console.log(question_db);
 
-      response = new Response(JSON.stringify({message: 'Questions added successfully', questions}), {
-        status: 200,
-        headers: {
-          'content-type': 'application/json',
-        },
-      });
+      response = new Response(
+        JSON.stringify({ message: 'Questions added successfully', question_db }),
+        {
+          status: 200,
+          headers: {
+            'content-type': 'application/json',
+          },
+        }
+      );
     }
   } catch (error) {
     if (error.code == 'P2025') {
@@ -116,25 +122,27 @@ export async function POST(request, response) {
 //DeleteQuestionHandler
 //URL: http://localhost:3000/api/questions?qid=6060ecc9-5dc4-415d-bae5-149a4b2a1d0a
 
-export async function DELETE(request, response){
-  const {searchParams} = new URL(request.url);
+export async function DELETE(request, response) {
+  const { searchParams } = new URL(request.url);
   const qid = searchParams.get('qid');
-  console.log(qid)
-  try{
+  console.log(qid);
+  try {
     const question = await prisma.questions.delete({
-      where:{
-        id: qid
+      where: {
+        id: qid,
+      },
+    });
+
+    response = new Response(
+      JSON.stringify({ message: 'Questions deleted successfully', questions }),
+      {
+        status: 200,
+        headers: {
+          'content-type': 'application/json',
+        },
       }
-    })
-    
-    response = new Response (JSON.stringify({message: 'Questions deleted successfully', questions}),{
-      status:200,
-      headers: {
-        'content-type': 'application/json'
-      }
-    })
-  }
-  catch(error){
+    );
+  } catch (error) {
     if (error.code == 'P2025') {
       response = new Response(JSON.stringify({ error: 'No question found' }), {
         status: 404,
@@ -162,29 +170,31 @@ export async function DELETE(request, response){
 //     "type":"choice"
 // }
 
-export async function PUT(request, response){
-  const {searchParams} = new URL (request.url);
+export async function PUT(request, response) {
+  const { searchParams } = new URL(request.url);
   const qid = searchParams.get('qid');
   const body = await request.json();
-  
-  try{
+
+  try {
     const question = await prisma.questions.update({
-      where:{
-        id:qid
+      where: {
+        id: qid,
       },
-      data:{
-        ...body
+      data: {
+        ...body,
       },
     });
-    
-    response = new Response(JSON.stringify({message:'Question updated successfully',question}),{
-      status:200,
-      headers:{
-        'content-type':'application/json'
+
+    response = new Response(
+      JSON.stringify({ message: 'Question updated successfully', question }),
+      {
+        status: 200,
+        headers: {
+          'content-type': 'application/json',
+        },
       }
-    })
-  }
-  catch(error){
+    );
+  } catch (error) {
     if (error.code == 'P2025') {
       response = new Response(JSON.stringify({ error: 'No question found' }), {
         status: 404,
@@ -202,5 +212,5 @@ export async function PUT(request, response){
       });
     }
   }
-  return response
+  return response;
 }
