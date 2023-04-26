@@ -10,7 +10,7 @@ import { MdOutlineDeleteOutline } from 'react-icons/md';
 import Button from 'react-bootstrap/Button';
 import Tooltip from 'react-bootstrap/Tooltip';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
-import { getAllForms } from '../services/form/service';
+import { createForm, deleteForm, getAllForms } from '../services/form/service';
 import { useState, useEffect } from 'react';
 
 const Forms = () => {
@@ -19,33 +19,44 @@ const Forms = () => {
     title: null,
     description: null,
   });
+  
   const toggleshow = () => setShowmodal(!showmodal);
-  const formsData = [
-    {
-      id: 1,
-      title: 'A trail survey',
-      createdOn: '12/04/2023',
-    },
-    {
-      id: 2,
-      title: 'semester feedback',
-      createdOn: '07/11/2023',
-    },
-  ];
 
   const [forms, setForms] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const uid = localStorage.getItem('uid');
+  
 
-  useEffect(() => {
-    async () => {
-      const uid = localStorage.getItem('uid');
-      const { data, error } = await getAllForms(uid);
-      if (data) {
-        console.log(data);
+  useEffect(() => {(
+      async () => {
+        const { data, error } = await getAllForms(uid);
+        if (data) {
+          setLoading(false);
+          console.log(data);
+          setForms(data.form);
+        }
       }
-    };
-  });
+    )();
+  }, []);
 
-  const createsurvey = async () => {};
+  const createsurvey = async () => {
+    console.log(details);
+    const {data, error} = await createForm(uid, details);
+    if(data){
+      console.log(data);
+    }
+  };
+  
+  const deleteSurvey = async (id) =>{
+    console.log("Delete triggered")
+    const {data, error} = await deleteForm(id);
+    if(data){
+      console.log(data)
+    }
+    else{
+    console.log(error)
+    }
+  }
 
   // console.log(data);
 
@@ -92,48 +103,54 @@ const Forms = () => {
         </Card>
         <div className="mt-4">
           <h2>Recent Forms</h2>
-          <Table hover>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>TITLE</th>
-                <th className="text-end">CREATED ON</th>
-                <th className="text-end">ACTIONS</th>
-              </tr>
-            </thead>
-            <tbody>
-              {formsData.map((form, i) => (
-                <tr key={i}>
-                  <td>{form.id}</td>
-                  <td>{form.title}</td>
-                  <td className="text-muted text-end">{form.createdOn}</td>
-                  <td className="text-end">
-                    <OverlayTrigger placement="bottom" overlay={<Tooltip>Edit</Tooltip>}>
-                      <Button
-                        variant="light"
-                        size="sm"
-                        className="rounded-circle text-warning mx-2 shadow-sm"
-                      >
-                        <FaPencilAlt />
-                      </Button>
-                    </OverlayTrigger>
-                    <OverlayTrigger
-                      placement="bottom"
-                      overlay={<Tooltip>Delete</Tooltip>}
-                    >
-                      <Button
-                        variant="light"
-                        size="sm"
-                        className="rounded-circle text-danger mx-2 shadow-sm"
-                      >
-                        <MdOutlineDeleteOutline />
-                      </Button>
-                    </OverlayTrigger>
-                  </td>
+          {loading? (<p>Loading..</p>):(
+          <>
+            <Table hover>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>TITLE</th>
+                  <th className="text-end">DESCRIPTION</th>
+                  <th className="text-end">ACTIONS</th>
                 </tr>
-              ))}
-            </tbody>
-          </Table>
+              </thead>
+              <tbody>
+                {forms.map((form, i) => (
+                  <tr key={i}>
+                    <td>{i+1}</td>
+                    <td>{form.name}</td>
+                    <td className="text-muted text-end">{form.description}</td>
+                    <td className="text-end">
+                      <OverlayTrigger placement="bottom" overlay={<Tooltip>Edit</Tooltip>}>
+                        <Button
+                          variant="light"
+                          size="sm"
+                          className="rounded-circle text-warning mx-2 shadow-sm"
+                        >
+                          <FaPencilAlt />
+                        </Button>
+                      </OverlayTrigger>
+                      <OverlayTrigger
+                        placement="bottom"
+                        overlay={<Tooltip>Delete</Tooltip>}
+                      >
+                        <Button
+                          variant="light"
+                          size="sm"
+                          className="rounded-circle text-danger mx-2 shadow-sm"
+                          onClick={()=>{deleteSurvey(form.id)}}  
+                        >
+                          <MdOutlineDeleteOutline />
+                        </Button>
+                      </OverlayTrigger>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </>
+          )}
+          
         </div>
       </section>
     </>

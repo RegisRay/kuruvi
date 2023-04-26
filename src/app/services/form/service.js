@@ -11,15 +11,16 @@ export const getAllForms = async(user_id)=>{
 }
 
 export const createForm = async(user_id, formDetails)=>{
+    console.log(formDetails);
     const options = {
         method: "post",
         url: `/api/forms?uid=${user_id}`,
         data:{
-            name: formDetails.name,
+            name: formDetails.title,
             description: formDetails.description,
         }
     }
-    const {data, error} = await response(options);
+    const {data, error} = await request(options);
     
     return {data, error}
     
