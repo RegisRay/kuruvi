@@ -11,15 +11,15 @@ export async function GET(request, response) {
   //Query parameter
   const { searchParams } = new URL(request.url);
   const uid = searchParams.get('uid');
-  console.log(uid, 'issss');
+  // console.log(uid, 'issss');
   try {
-    const user = await prisma.forms.findMany({
+    const form = await prisma.forms.findMany({
       where: {
         user_id: uid,
       },
     });
 
-    response = new Response(JSON.stringify(user), {
+    response = new Response(JSON.stringify({message: 'Forms fetched successfully', form}), {
       status: 200,
       headers: {
         'content-type': 'application/json',
@@ -70,7 +70,7 @@ export async function POST(request, response) {
       },
     });
 
-    response = new Response(JSON.stringify(form), {
+    response = new Response(JSON.stringify({message: 'Form created successfully', form}), {
       status: 200,
       headers: {
         'content-type': 'application/json',
@@ -122,7 +122,7 @@ export async function PUT(request, response) {
       },
     });
 
-    response = new Response(JSON.stringify(form), {
+    response = new Response(JSON.stringify({message: 'Forms updated successfully', form}), {
       status: 200,
       headers: {
         'content-type': 'application/json',

@@ -21,7 +21,7 @@ export async function GET(request, response) {
       }
     });
     
-    response = new Response( JSON.stringify(questions), {
+    response = new Response( JSON.stringify({message: 'Questions fetched successfully', questions}), {
       status: 200,
       headers: {
         'content-type': 'application/json',
@@ -84,7 +84,7 @@ export async function POST(request, response) {
 
       console.log(question_db);
 
-      response = new Response(JSON.stringify(question_db), {
+      response = new Response(JSON.stringify({message: 'Questions added successfully', questions}), {
         status: 200,
         headers: {
           'content-type': 'application/json',
@@ -93,7 +93,7 @@ export async function POST(request, response) {
     }
   } catch (error) {
     if (error.code == 'P2025') {
-      response = new Response(JSON.stringify({ error: 'No question found' }), {
+      response = new Response(JSON.stringify({ error: 'No form found' }), {
         status: 404,
         headers: {
           'content-type': 'application/json',
@@ -127,7 +127,7 @@ export async function DELETE(request, response){
       }
     })
     
-    response = new Response (JSON.stringify(question),{
+    response = new Response (JSON.stringify({message: 'Questions deleted successfully', questions}),{
       status:200,
       headers: {
         'content-type': 'application/json'
@@ -136,7 +136,7 @@ export async function DELETE(request, response){
   }
   catch(error){
     if (error.code == 'P2025') {
-      response = new Response(JSON.stringify({ error: 'No forms found' }), {
+      response = new Response(JSON.stringify({ error: 'No question found' }), {
         status: 404,
         headers: {
           'content-type': 'application/json',
@@ -177,7 +177,7 @@ export async function PUT(request, response){
       },
     });
     
-    response = new Response(JSON.stringify({message:'Question updated',question}),{
+    response = new Response(JSON.stringify({message:'Question updated successfully',question}),{
       status:200,
       headers:{
         'content-type':'application/json'

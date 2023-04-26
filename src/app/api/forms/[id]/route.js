@@ -17,7 +17,7 @@ export async function GET(request, { params }, response) {
       },
     });
 
-    response = new Response(JSON.stringify(form), {
+    response = new Response(JSON.stringify({message: 'Form fetched successfully', form}), {
       status: 200,
       headers: {
         'content-type': 'application/json',
@@ -61,7 +61,7 @@ export async function PUT(request, { params }, response) {
       },
     });
 
-    response = new Response(JSON.stringify(form), {
+    response = new Response(JSON.stringify({message: 'Form updated successfully', form}), {
       status: 200,
       headers: {
         'content-type': 'application/json',

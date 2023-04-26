@@ -17,7 +17,7 @@ export async function GET(request, response){
             }
         });
         
-        response = new Response (JSON.stringify(answer),{
+        response = new Response (JSON.stringify({message: 'Answers fetched successfully', answer}),{
             status: 200,
             headers: {
                 'content-type':'application/json'
@@ -27,7 +27,7 @@ export async function GET(request, response){
     catch (error) {
         console.log(error);
         if ((error.code = 'P2025')) {
-          response = new Response(JSON.stringify({ error: 'User not found' }), {
+          response = new Response(JSON.stringify({ error: 'Question not found' }), {
             status: 404,
             headers: {
               'content-type': 'application/json',
@@ -65,7 +65,7 @@ export async function POST(request, response){
             }
         })
         
-        response = new Response(JSON.stringify(answer), {
+        response = new Response(JSON.stringify({message: 'Answers added successfully', answer}), {
             status: 200,
             headers:{
                 'content-type':'application/json'
@@ -75,7 +75,7 @@ export async function POST(request, response){
     catch (error) {
         console.log(error);
         if ((error.code = 'P2025')) {
-          response = new Response(JSON.stringify({ error: 'User not found' }), {
+          response = new Response(JSON.stringify({ error: 'Question not found' }), {
             status: 404,
             headers: {
               'content-type': 'application/json',
@@ -107,7 +107,7 @@ export async function DELETE(request, response){
             }
         });
         
-        response = new Response(JSON.stringify(answer),{
+        response = new Response(JSON.stringify({message: 'Answer deleted successfully', answer}),{
             status: 200,
             headers:{
                 'content-type':'application/json'
@@ -117,7 +117,7 @@ export async function DELETE(request, response){
     catch (error) {
         console.log(error);
         if ((error.code = 'P2025')) {
-          response = new Response(JSON.stringify({ error: 'Question not found' }), {
+          response = new Response(JSON.stringify({ error: 'Answer not found' }), {
             status: 404,
             headers: {
               'content-type': 'application/json',
@@ -156,7 +156,7 @@ export async function PUT(request, response){
             }
         });
         
-        response = new Response(JSON.stringify(answer),{
+        response = new Response(JSON.stringify({message: 'Answer updated successfully', answer}),{
             status: 200,
             headers:{
                 'content-type':'application/json'
@@ -166,7 +166,7 @@ export async function PUT(request, response){
     catch (error) {
         console.log(error);
         if ((error.code = 'P2025')) {
-          response = new Response(JSON.stringify({ error: 'Question not found' }), {
+          response = new Response(JSON.stringify({ error: 'Answer not found' }), {
             status: 404,
             headers: {
               'content-type': 'application/json',
