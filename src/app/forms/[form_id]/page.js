@@ -9,7 +9,7 @@ const Form = () => {
     <>
       <section>
         <h3>Trail Suvey / 14-04-2023</h3>
-        <div className="d-flex justify-content-center align-items-center">
+        <div className="d-flex d-grid justify-content-center align-items-center gap-3">
           <button
             onClick={() => {
               setShow(1);
@@ -25,12 +25,8 @@ const Form = () => {
             Responses
           </button>
         </div>
-        <div>
-          {show == 1 ? (
-            <div>this is Form structure page.</div>
-          ) : (
-            <div>this is form responses page.</div>
-          )}
+        <div className="d-flex justify-content-center mt-5">
+          {show == 1 ? <div></div> : <div>this is form responses page.</div>}
         </div>
       </section>
     </>
