@@ -26,21 +26,6 @@ export const createForm = async(user_id, formDetails)=>{
     
 }
 
-export const updateForm = async(form_id, formDetails) =>{
-    const options = {
-        method: "put",
-        url: `/api/forms?fid=${form_id}`,
-        data:{
-            name: formDetails.name,
-            description: formDetails.description,
-            id: form_id
-        }
-    }
-    
-    const{data, error} = await response(options)
-    return {data, error}
-}
-
 export const deleteForm = async(form_id)=>{
     const options = {
         method: "delete",
