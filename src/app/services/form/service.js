@@ -17,7 +17,6 @@ export const createForm = async(user_id, formDetails)=>{
         data:{
             name: formDetails.name,
             description: formDetails.description,
-            user_id
         }
     }
     const {data, error} = await response(options);
@@ -30,9 +29,6 @@ export const deleteForm = async(form_id)=>{
     const options = {
         method: "delete",
         url:`/api/forms?fid=${form_id}`,
-        data:{
-            id: form_id
-        }
     }
     
     const {data, error} = await request(options);
@@ -45,9 +41,7 @@ export const getForm = async(form_id)=>{
     const options = {
         method: "get",
         url: `/api/form/${form_id}`,
-        data:{
-            id: form_id
-        }
+
     }
     
     const {data, error} = request(options);
@@ -61,7 +55,6 @@ export const updateForm = async(form_id, formDetails) =>{
         data:{
             name: formDetails.name,
             description: formDetails.description,
-            id: form_id
         }
     }
     

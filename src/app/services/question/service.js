@@ -4,9 +4,6 @@ export const getQuestion = async(form_id) =>{
     const options = {
         method: "get",
         url: `/api/questions?fid=${form_id}}`,
-        data:{
-            form_id,
-        }
     }
     
     const {data, error} = await request(options)
@@ -18,7 +15,6 @@ export const addQuestion = async(form_id, questionDetails) =>{
         method: "post",
         url: `/api/questions?fid=${form_id}`,
         data: {
-            form_id,
             type: questionDetails.type,
             content: questionDetails.content,
             choice_name: questionDetails.choice_name
@@ -33,9 +29,6 @@ export const deleteQuestion = async(question_id) =>{
     const options = {
         method: "delete",
         url: `/api/questions?qid=${question_id}`,
-        data: {
-            id: question_id
-        }
     }
     
     const {data, error} = await request(options);
@@ -47,7 +40,6 @@ export const updateQuestion = async(question_id, questionDetails) =>{
         method: "put",
         url: `/api/questions?qid=${question_id}`,
         data:{
-            id: question_id,
             content: questionDetails.content,
             type: questionDetails.type
         }
