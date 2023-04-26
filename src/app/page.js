@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { getAudioTranslation } from './service';
 
 import Auth from 'src/components/Auth';
 import { useAuth, VIEWS } from 'src/components/AuthProvider';
@@ -24,6 +25,13 @@ export default function Home() {
         <Link className="button" href="/profile">
           Go to Profile
         </Link>
+        <button
+          onClick={() => {
+            getAudioTranslation();
+          }}
+        >
+          bro!
+        </button>
         <button type="button" className="button-inverse" onClick={signOut}>
           Sign Out
         </button>
