@@ -18,13 +18,16 @@ const SignIn = () => {
   const [errorMsg, setErrorMsg] = useState(null);
 
   async function signIn(formData) {
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email: formData.email,
       password: formData.password,
     });
 
     if (error) {
       setErrorMsg(error.message);
+    } else if (data) {
+      // save to local storage
+      localStorage.setItem('uid', data.user.id);
     }
   }
 

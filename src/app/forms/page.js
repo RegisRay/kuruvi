@@ -7,8 +7,35 @@ import { MdOutlineDeleteOutline } from 'react-icons/md';
 import Button from 'react-bootstrap/Button';
 import Tooltip from 'react-bootstrap/Tooltip';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import axios from 'axios';
+import createClient from 'src/lib/supabase-browser';
 
-const Forms = () => {
+// You should use getServerSideProps when:
+// - Only if you need to pre-render a page whose data must be fetched at request time
+// export const getServerSideProps = async (ctx) => {
+//   console.log('niceee');
+//   const supabase = createClient();
+//   const { uid } = await supabase.auth.api.getUserByCookie(ctx.req);
+//   console.log(uid, 'server side props');
+//   const { data, error } = await axios.get(`/api/forms?uid=${uid}`);
+
+//   if (data) {
+//     return {
+//       props: {
+//         data,
+//       },
+//     };
+//   } else {
+//     return {
+//       redirect: {
+//         destination: '/profile',
+//         permanent: false,
+//       },
+//     };
+//   }
+// };
+
+const Forms = ({ data }) => {
   const formsData = [
     {
       id: 1,
@@ -21,6 +48,10 @@ const Forms = () => {
       createdOn: '07/11/2023',
     },
   ];
+
+  useEffect(() => {}, [third]);
+
+  // console.log(data);
 
   return (
     <section className="container-fluid d-flex flex-column justify-content-start">
