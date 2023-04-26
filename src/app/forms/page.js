@@ -37,7 +37,7 @@ const Forms = () => {
         }
       }
     )();
-  }, []);
+  }, [forms.length]);
 
   const createsurvey = async () => {
     console.log(details);
