@@ -49,7 +49,7 @@ const Forms = ({ data }) => {
     },
   ];
 
-  useEffect(() => {}, [third]);
+  // useEffect(() => {}, [third]);
 
   // console.log(data);
 
