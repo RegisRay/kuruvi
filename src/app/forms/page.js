@@ -10,7 +10,6 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import { getAllForms } from './service';
 import { useState, useEffect } from 'react';
 
-
 const Forms = () => {
   const formsData = [
     {
@@ -24,19 +23,18 @@ const Forms = () => {
       createdOn: '07/11/2023',
     },
   ];
-  
+
   const [forms, setForms] = useState([]);
 
-  useEffect(()=>{
-    (async()=>{
-      const uid = localStorage.getItem('uid')  
-      const {data, error} =await getAllForms(uid);
-      if(data){
+  useEffect(() => {
+    async () => {
+      const uid = localStorage.getItem('uid');
+      const { data, error } = await getAllForms(uid);
+      if (data) {
         console.log(data);
-        setForms(data);
       }
-    })();
-  },[]);
+    };
+  });
 
   // console.log(data);
 
