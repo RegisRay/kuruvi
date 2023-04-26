@@ -1,26 +1,24 @@
 export const testData = {
-  type: 'bar',
-  data: {
-    labels: ['Question1', 'Question2', 'Question3'],
-    datasets: [
-      {
-        data: [12, 10, 30, 5], //first choice for all questions
-        borderColor: 'rgb(109, 253, 181)',
-        backgroundColor: 'rgb(109, 253, 181,0.5)',
-        borderWidth: 2,
-      },
-      {
-        data: [12, 10, 30, 5], //second choice for all questions
-        borderColor: 'rgb(75, 192, 192)',
-        backgroundColor: 'rgb(75, 192, 192,0.5)',
-        borderWidth: 2,
-      },
-      {
-        data: [12, 10, 30, 5], //third choice for all questions
-        borderColor: 'rgb(255, 205, 86)',
-        backgroundColor: 'rgb(255, 205, 86,0.5)',
-        borderWidth: 2,
-      },
+  labels: ['Choice1', 'Choice2', 'Choice3', 'Choice4'],
+  datasets: [{
+    label: '# of Votes',
+    data: [12, 19, 3, 5],
+    backgroundColor: [
+      'rgba(255, 99, 132, 0.2)',
+      'rgba(54, 162, 235, 0.2)',
+      'rgba(255, 206, 86, 0.2)',
+      'rgba(75, 192, 192, 0.2)',
+      'rgba(153, 102, 255, 0.2)',
+      'rgba(255, 159, 64, 0.2)'
     ],
-  },
+    borderColor: [
+      'rgba(255, 99, 132, 1)',
+      'rgba(54, 162, 235, 1)',
+      'rgba(255, 206, 86, 1)',
+      'rgba(75, 192, 192, 1)',
+      'rgba(153, 102, 255, 1)',
+      'rgba(255, 159, 64, 1)'
+    ],
+    borderWidth: 1
+  }]
 };

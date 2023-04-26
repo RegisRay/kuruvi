@@ -1,23 +1,38 @@
-'use client';
+'use client'
 
-import { Chart } from 'chart.js';
-import { testData } from './test-data';
-import { useEffect } from 'react';
+import React from "react";
+import {Chart} from "chart.js";
+import { testData } from "./test-data";
 
-export function Test() {
-  useEffect(() => {
-    var ctx = document.getElementById('myChart').getContext('2d');
-    var myChart = new Chart(ctx, { testData });
+export default function CardBarChart() {
+  React.useEffect(() => {
+    let config = {
+      type: "bar",
+      data: testData
+    };
+    let ctx = document.getElementById("bar-chart").getContext("2d");
+    window.myBar = new Chart(ctx, config);
   }, []);
-
   return (
     <>
-      <h1 className="mx-auto mt-10 w-[150px] text-xl font-semibold capitalize ">
-        Bar Chart
-      </h1>
-      <div className="mx-auto my-auto flex h-screen w-[1100px]">
-        <div className="my-auto h-fit w-full rounded-xl  border border-gray-400 pt-0  shadow-xl">
-          <canvas id="myChart"></canvas>
+      <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
+        <div className="rounded-t mb-0 px-4 py-3 bg-transparent">
+          <div className="flex flex-wrap items-center">
+            <div className="relative w-full max-w-full flex-grow flex-1">
+              <h6 className="uppercase text-blueGray-400 mb-1 text-xs font-semibold">
+                Results
+              </h6>
+              <h2 className="text-blueGray-700 text-xl font-semibold">
+                Question 1
+              </h2>
+            </div>
+          </div>
+        </div>
+        <div className="p-4 flex-auto">
+          {/* Chart */}
+          <div className="relative h-150-px">
+            <canvas id="bar-chart"></canvas>
+          </div>
         </div>
       </div>
     </>
