@@ -35,10 +35,10 @@ export default async function RootLayout({ children }) {
           </AuthProvider>
           {/* footer */}
           <footer>
-            <p className="d-flex flex-column justify-content-center align-items-center">
+            <div className="d-flex flex-column justify-content-center align-items-center">
               <hr className="w-50" />
               <small>Made with ❤️ by team Survey Kuruvi.</small>
-            </p>
+            </div>
           </footer>
         </main>
       </body>

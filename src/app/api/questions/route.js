@@ -1,9 +1,5 @@
 import prisma from '@/lib/prisma';
 
-export const config = {
-  runtime: 'experimental-edge',
-};
-
 // GetQuestionsWithChoiceHandler
 // URL: http://localhost:3000/api/questions?fid=b9cd2345-73d9-4c31-9236-d99220ad7555
 

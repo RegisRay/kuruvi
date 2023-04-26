@@ -15,14 +15,24 @@ export async function GET(request, { params }, response) {
       where: {
         id,
       },
-    });
-
-    response = new Response(JSON.stringify({message: 'Form fetched successfully', form}), {
-      status: 200,
-      headers: {
-        'content-type': 'application/json',
+      include: {
+        questions: {
+          include: {
+            answers: true,
+          },
+        },
       },
     });
+
+    response = new Response(
+      JSON.stringify({ message: 'Form fetched successfully', form }),
+      {
+        status: 200,
+        headers: {
+          'content-type': 'application/json',
+        },
+      }
+    );
   } catch (error) {
     console.log(error);
     if ((error.code = 'P2025')) {
@@ -61,12 +71,15 @@ export async function PUT(request, { params }, response) {
       },
     });
 
-    response = new Response(JSON.stringify({message: 'Form updated successfully', form}), {
-      status: 200,
-      headers: {
-        'content-type': 'application/json',
-      },
-    });
+    response = new Response(
+      JSON.stringify({ message: 'Form updated successfully', form }),
+      {
+        status: 200,
+        headers: {
+          'content-type': 'application/json',
+        },
+      }
+    );
   } catch (error) {
     console.log(error);
     if ((error.code = 'P2025')) {

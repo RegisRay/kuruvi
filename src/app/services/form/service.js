@@ -42,7 +42,7 @@ export const getForm = async (form_id) => {
     url: `/api/form/${form_id}`,
   };
 
-  const { data, error } = request(options);
+  const { data, error } = await request(options);
   return { data, error };
 };
 
@@ -56,6 +56,6 @@ export const updateForm = async (form_id, formDetails) => {
     },
   };
 
-  const { data, error } = request(options);
+  const { data, error } = await request(options);
   return { data, error };
 };
