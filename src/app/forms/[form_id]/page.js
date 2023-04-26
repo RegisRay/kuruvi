@@ -7,16 +7,20 @@ import { Card } from 'react-bootstrap';
 
 const Form = () => {
   const { form_id } = useParams();
-  console.log('this is form id ' + form_id);
+  // console.log('this is form id ' + form_id);
   const [show, setShow] = useState(1);
   const [form, setForm] = useState([]);
 
   useEffect(() => {
     (async () => {
       const { data, error } = await getForm(form_id);
+      console.log(data, error);
       if (data) {
-        console.log('it is the retrived on id form ' + data.form);
+        setLoading(false);
+        console.log('it is the' + data);
         setForm(data.form);
+      } else {
+        console.log(error, 'sadd');
       }
     })();
   }, [form.length]);
