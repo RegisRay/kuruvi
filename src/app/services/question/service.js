@@ -28,3 +28,31 @@ export const addQuestion = async(form_id, questionDetails) =>{
     const {data, error} = await request(options);
     return {data, error}
 }
+
+export const deleteQuestion = async(question_id) =>{
+    const options = {
+        method: "delete",
+        url: `/api/questions?qid=${question_id}`,
+        data: {
+            id: question_id
+        }
+    }
+    
+    const {data, error} = await request(options);
+    return {data, error}
+}
+
+export const updateQuestion = async(question_id, questionDetails) =>{
+    const options = {
+        method: "put",
+        url: `/api/questions?qid=${question_id}`,
+        data:{
+            id: question_id,
+            content: questionDetails.content,
+            type: questionDetails.type
+        }
+    }
+    
+    const {data, error} = await request(options);
+    return {data, error};
+} 
