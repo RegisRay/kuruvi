@@ -10,20 +10,20 @@ const Form = () => {
       <section>
         <h3>Trail Suvey / 14-04-2023</h3>
         <div className="d-flex justify-content-center align-items-center">
-          <a
-            onclick={() => {
+          <button
+            onClick={() => {
               setShow(1);
             }}
           >
             Edit Form
-          </a>
-          <a
-            onclick={() => {
+          </button>
+          <button
+            onClick={() => {
               setShow(2);
             }}
           >
             Responses
-          </a>
+          </button>
         </div>
         <div>
           {show == 1 ? (
