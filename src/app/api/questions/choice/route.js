@@ -12,9 +12,9 @@ export async function GET(request, response){
     try{
         const choice = await prisma.choice.findMany({
             where:{
-                question_id: qid
-            }
-        })
+              question_id:qid
+            },
+        });
         
         response = new Response(JSON.stringify({message: 'Choices fetched successfully', choice}),{
             status: 200,
