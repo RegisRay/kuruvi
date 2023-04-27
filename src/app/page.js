@@ -1,6 +1,6 @@
 'use client';
 
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { getAudioTranslation } from './service';
 
 import Auth from 'src/components/Auth';
@@ -106,7 +106,5 @@ export default function Home() {
       </div>
     );
   }
-
-  return <Auth view={view} />;
 }
 
