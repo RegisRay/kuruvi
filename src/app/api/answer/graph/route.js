@@ -5,24 +5,47 @@ export async function GET(request, response){
     const {searchParams} = new URL(request.url);
     const qid = searchParams.get('qidRes');
     try{
-      const choices = await prisma.questions.findMany({
+      const choices = await prisma.choice.findMany({
         where:{
-          id: qid
+          question_id: qid
         },
-        
-        
       })
-    //   let choice_id=[]
-    //   choices.map((choice)=>{choice_id.push(choice.id)})
-    //   let answerRes = [];
-    //   for(let i in choice_id){
-    //     const answers = await prisma.answers.count({
-    //         where:{
-    //             choice_id: choice_id[i]         
-    //         }
-    //     })
-    //     answerRes.push(answers)
-    //   }
+      let choice_id=[]
+    //   console.log(choices)
+      choices.map((choice)=>{choice_id.push(choice.id)})
+    //   console.log(choice_id)
+      
+      let answerCount = [];
+      for(let i in choice_id){
+        const answers = await prisma.answers.count({
+            where:{
+                choice_id: choice_id[i]         
+            }
+        })
+        answerCount.push(answers)
+      }
+    //   console.log(answerCount)
+      
+      let ans=[];
+      
+      for(let i in choices){
+        let temp ;
+        temp ={
+            choice_id: choices[i].id,
+            count: answerCount[i],
+            name: choices[i].name
+        }
+        ans.push(temp)
+      }
+    //   console.log(ans);
+      
+      response = new Response(JSON.stringify(ans),{
+        status:200,
+        headers:{
+            'content-type':'application/type'
+        }
+      })
+      
     }
     catch (error) {
       console.log(error);
