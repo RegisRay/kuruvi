@@ -19,7 +19,7 @@ export async function GET(request, { params }, response) {
         questions: {
           include: {
             answers: true,
-            choice: true
+            choice: true,
           },
         },
       },
