@@ -26,6 +26,7 @@ const Forms = () => {
   const [forms, setForms] = useState([]);
   const [loading, setLoading] = useState(true);
   const uid = localStorage.getItem('uid');
+  console.log(uid);
 
   useEffect(() => {
     (async () => {

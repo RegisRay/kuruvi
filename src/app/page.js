@@ -11,7 +11,7 @@ import Button from 'react-bootstrap/Button';
 
 export default function Home() {
   const { initial, user, view, signOut } = useAuth();
-  const { push } = useRouter();
+  const router = useRouter();
 
   if (initial) {
     return <div className="card h-72">Loading...</div>;
@@ -29,7 +29,7 @@ export default function Home() {
           <Button
             varient="info"
             onClick={() => {
-              push('/profile');
+              router.push('/profile');
             }}
           >
             Profile
@@ -39,4 +39,5 @@ export default function Home() {
       </>
     );
   }
+  return <Auth view={view} />;
 }

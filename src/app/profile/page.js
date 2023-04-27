@@ -1,16 +1,16 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import supabase from 'src/lib/supabase-browser';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
-import { useRouter } from 'next/navigation';
 import SignOut from 'src/components/SignOut';
 import UpdatePassword from 'src/components/Auth/UpdatePassword';
 
 export default async function Profile() {
   // const supabase = createClient();
-  const { push } = useRouter();
+  const router = useRouter();
   const [show, setshow] = useState(false);
   const toggle = () => setshow(!show);
 
@@ -28,15 +28,15 @@ export default async function Profile() {
         <Card style={{ width: '28rem' }}>
           <Card.Header>User Details</Card.Header>
           <Card.Body>
-            <Card.Text>E-MAIL: {user.email}</Card.Text>
+            <Card.Text>E-MAIL: {user?.email}</Card.Text>
             <Card.Text>
-              LAST LOGIN: {new Date(user.last_sign_in_at).toUTCString()}
+              LAST LOGIN: {new Date(user?.last_sign_in_at).toUTCString()}
             </Card.Text>
             <Button
               variant="primary"
               className="me-3"
               onClick={() => {
-                push('/forms');
+                router.push('/forms');
               }}
             >
               HOME
