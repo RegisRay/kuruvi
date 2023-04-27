@@ -28,16 +28,18 @@ const Forms = () => {
   const uid = localStorage.getItem('uid');
   console.log(uid);
 
+  const getForms = async () => {
+    const { data, error } = await getAllForms(uid);
+    if (data) {
+      setLoading(false);
+      console.log('it is the retrived data ' + data.form);
+      setForms(data.form);
+      console.log('it is the retrived data ' + forms);
+    }
+  };
+
   useEffect(() => {
-    (async () => {
-      const { data, error } = await getAllForms(uid);
-      if (data) {
-        setLoading(false);
-        console.log('it is the retrived data ' + data.form);
-        setForms(data.form);
-        console.log('it is the retrived data ' + forms);
-      }
-    })();
+    getForms();
   }, [forms.length]);
 
   const createsurvey = async () => {
@@ -45,6 +47,8 @@ const Forms = () => {
     const { data, error } = await createForm(uid, details);
     if (data) {
       console.log(data);
+      getForms();
+      setShowmodal(false);
     }
   };
 
@@ -53,6 +57,7 @@ const Forms = () => {
     const { data, error } = await deleteForm(id);
     if (data) {
       console.log(data);
+      getForms();
     } else {
       console.log(error);
     }

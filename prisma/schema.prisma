@@ -274,7 +274,7 @@ model profiles {
 }
 
 model forms {
-  id          String      @id @db.Uuid
+  id          String      @id @default(uuid()) @db.Uuid
   user_id     String      @db.Uuid
   created_at  DateTime?   @db.Timestamptz(6)
   updated_at  DateTime?   @db.Timestamptz(6)
@@ -287,7 +287,7 @@ model forms {
 }
 
 model questions {
-  id         String    @id @db.Uuid
+  id         String    @id @default(uuid()) @db.Uuid
   form_id    String    @db.Uuid
   created_at DateTime? @default(now()) @db.Timestamptz(6)
   updated_at DateTime? @default(now()) @db.Timestamptz(6)
@@ -302,7 +302,7 @@ model questions {
 }
 
 model choice {
-  id          String    @id @db.Uuid
+  id          String    @id @default(uuid()) @db.Uuid
   name        String
   question_id String    @db.Uuid
   answers     answers[]
@@ -313,7 +313,7 @@ model choice {
 }
 
 model answers {
-  id          String    @id @db.Uuid
+  id          String    @id @default(uuid()) @db.Uuid
   question_id String    @db.Uuid
   created_at  DateTime? @default(now()) @db.Timestamptz(6)
   updated_at  DateTime? @default(now()) @db.Timestamptz(6)

@@ -1,6 +1,8 @@
 import prisma from '@/lib/prisma';
 
-// export const runtime = 'experimental-edge';
+export const config = {
+  runtime: 'experimental-edge',
+};
 
 export const config = {
   runtime: 'experimental-edge',
@@ -67,7 +69,7 @@ export async function POST(request, response) {
       data: {
         value,
         question_id: qid,
-        choice_id: cid
+        choice_id: cid,
       },
     });
 

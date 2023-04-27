@@ -5,13 +5,64 @@ import { getAudioTranslation } from './service';
 
 import Auth from 'src/components/Auth';
 import { useAuth, VIEWS } from 'src/components/AuthProvider';
-
-import Forms from './forms/page';
-import Button from 'react-bootstrap/Button';
+import { useState } from 'react';
+import { TextWriter } from './writer';
 
 export default function Home() {
   const { initial, user, view, signOut } = useAuth();
-  const router = useRouter();
+  
+  const [formData, setFormData] = useState(null);
+
+  const handleFile = async (e) => {
+     if (e.target.files && e.target.files[0]) {
+       const file = e.target.files[0];
+      
+       const data = new FormData();
+       data.append("file", file);
+       data.append("model", "whisper-1");
+       setFormData(data);
+ 
+       // check if the size is less than 25MB
+       if (file.size > 25 * 1024 * 1024) {
+         alert("Please upload an audio file less than 25MB");
+         return;
+       }
+     }
+    }
+    
+    const [convertedText, setConvertedText] = useState("");
+    const [translateText, setTranslateText] = useState("");
+    const [loading, setLoading] = useState(false);
+  
+    const sendAudio = async () => {
+      setLoading(true);
+      const res = await fetch("https://api.openai.com/v1/audio/transcriptions", {
+        headers: {
+          Authorization: `Bearer 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`,
+        },
+        method: "POST",
+        body: formData,
+      });
+  
+      const data = await res.json();
+  
+      setConvertedText(data.text);
+      const res1 =  await fetch("https://api.openai.com/v1/audio/translations", {
+        headers: {
+          Authorization: `Bearer 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`,
+        },
+        method: "POST",
+        body: formData,
+      });
+      const data1 = await res1.json();
+      
+      setTranslateText(data1.text);
+      setLoading(false);
+      
+      
+  
+    };
+   
 
   if (initial) {
     return <div className="card h-72">Loading...</div>;
@@ -23,6 +74,36 @@ export default function Home() {
 
   if (user) {
     return (
+      <div className="card">
+        <h2>Welcome!</h2>
+        <code className="highlight">{user.role}</code>
+        <Link className="button" href="/profile">
+          Go to Profile
+        </Link>
+        <button
+          onClick={() => {
+            getAudioTranslation();
+          }}
+        >
+          bro!
+        </button>
+        <button type="button" className="button-inverse" onClick={signOut}>
+          Sign Out
+        </button>
+        
+        <input
+          type="file"
+          accept="audio/*"
+          onChange={handleFile}
+        />
+        <button onClick={sendAudio} >
+          Send Audio
+        </button>
+        {loading?(<>Loading</>):(<>
+          <TextWriter text={convertedText} delay={10}/>
+          <TextWriter text={translateText} delay={10}/>
+        </>)}
+      </div>
       <>
         <div className="d-flex justify-content-between">
           <h2>வணக்கம் !</h2>
@@ -41,3 +122,4 @@ export default function Home() {
   }
   return <Auth view={view} />;
 }
+
