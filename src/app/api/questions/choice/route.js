@@ -8,13 +8,14 @@ export const config = {
 //URL: http://localhost:3000/api/questions/choice?qid=9ea3875b-23d5-4a83-8c48-d055dcc7e9f8
 export async function GET(request, response){
     const {searchParams} = new URL(request.url);
-    const {qid} = searchParams.get('qid');
+    const qid =  searchParams.get('qid');
     try{
         const choice = await prisma.choice.findMany({
             where:{
               question_id:qid
             },
         });
+        // console.log(choice);
         
         response = new Response(JSON.stringify({message: 'Choices fetched successfully', choice}),{
             status: 200,
