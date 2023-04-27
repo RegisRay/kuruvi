@@ -10,18 +10,19 @@ export async function GET(request, response){
           id: qid
         },
         
+        
       })
-      let choice_id=[]
-      choices.map((choice)=>{choice_id.push(choice.id)})
-      let answerRes = [];
-      for(let i in choice_id){
-        const answers = await prisma.answers.count({
-            where:{
-                choice_id: choice_id[i]         
-            }
-        })
-        answerRes.push(answers)
-      }
+    //   let choice_id=[]
+    //   choices.map((choice)=>{choice_id.push(choice.id)})
+    //   let answerRes = [];
+    //   for(let i in choice_id){
+    //     const answers = await prisma.answers.count({
+    //         where:{
+    //             choice_id: choice_id[i]         
+    //         }
+    //     })
+    //     answerRes.push(answers)
+    //   }
     }
     catch (error) {
       console.log(error);
