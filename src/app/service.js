@@ -16,7 +16,7 @@ export const getAudioTranslation = async () => {
     {
       headers: {
         ...form.getHeaders(),
-        Authentication: 'Bearer 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',
+        // Authentication: 'Bearer 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',
       },
     }
   );

@@ -57,7 +57,7 @@ export async function GET(request, response) {
 
 export async function POST(request, response) {
   const { searchParams } = new URL(request.url);
-  const { type, content, choice_name } = await request.json();
+  const { type, content, choice } = await request.json();
   const fid = searchParams.get('fid');
 
   try {
@@ -75,7 +75,7 @@ export async function POST(request, response) {
           content,
           choice: {
             create: {
-              name: choice_name,
+              name: choice,
             },
           },
         },

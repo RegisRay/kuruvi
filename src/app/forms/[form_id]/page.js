@@ -1,7 +1,7 @@
 // view a single form
 'use client';
 import { useState, useEffect } from 'react';
-import { useParams } from 'next/navigation';
+import { redirect, useParams } from 'next/navigation';
 import { getForm } from './service';
 import Card from 'react-bootstrap/Card';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
@@ -10,9 +10,11 @@ import Button from 'react-bootstrap/Button';
 import Link from 'next/link';
 import { FaPencilAlt } from 'react-icons/fa';
 import { MdOutlineDeleteOutline } from 'react-icons/md';
-import { updateQuestion } from 'src/app/services/question/service';
+import { addQuestion, updateQuestion } from 'src/app/services/question/service';
 import { addChoice } from 'src/app/services/choice/service';
+import { deleteForm } from 'src/app/services/form/service';
 import Modal from 'react-bootstrap/Modal';
+import { IoIosAddCircleOutline } from 'react-icons/io';
 
 const Form = () => {
   const { form_id } = useParams();
@@ -21,6 +23,7 @@ const Form = () => {
   const [form, setForm] = useState(null);
   const [loading, setLoading] = useState(true);
   const [modalShow, setModalShow] = useState(false);
+  const [modalShow_1, setModalShow_1] = useState(false);
   const [modalDetails, setModalDetails] = useState({
     title: '',
     body: '',
@@ -29,7 +32,7 @@ const Form = () => {
   const [newQuestion, setNewQuestion] = useState({
     content: '',
     type: '',
-    choice: [],
+    choice: '',
   });
 
   const updateQuestionHandler = async (form_id, question_id, questionDetails) => {
@@ -47,18 +50,46 @@ const Form = () => {
     }
   };
 
+  const addQuestionHandler = async (form_id, questionDetails) => {
+    const { data, error } = await addQuestion(form_id, questionDetails);
+    if (data) {
+      console.log(data);
+      // const { da, err } = await addChoice(data.question.id, {
+      //   name: newQuestion.choice,
+      // });
+      // if (da) {
+      // }
+      setModalShow(false);
+      getAllQuestions();
+    } else {
+      console.log(error);
+    }
+  };
+
+  const deleteSurvey = async (form_id) => {
+    const { data, error } = await deleteForm(form_id);
+    if (data) {
+      console.log(data);
+      window.location.href = '/forms';
+    } else {
+      console.log(error);
+    }
+  };
+
+  const getAllQuestions = async () => {
+    const { data, error } = await getForm(form_id);
+    console.log(data, error);
+    if (data) {
+      setLoading(false);
+      console.log('it is the' + data.form.name);
+      setForm(data.form);
+    } else {
+      console.log(error, 'sadd');
+    }
+  };
+
   useEffect(() => {
-    (async () => {
-      const { data, error } = await getForm(form_id);
-      console.log(data, error);
-      if (data) {
-        setLoading(false);
-        console.log('it is the' + data.form.name);
-        setForm(data.form);
-      } else {
-        console.log(error, 'sadd');
-      }
-    })();
+    getAllQuestions();
   }, []);
 
   useEffect(() => {
@@ -67,6 +98,45 @@ const Form = () => {
 
   return (
     <>
+      <Modal show={modalShow_1} onHide={() => setModalShow_1(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Add Question to {form?.name} </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="d-flex flex-column">
+            <label>Question</label>
+            <input
+              type="text"
+              className="form-control"
+              value={newQuestion.content}
+              onChange={(e) =>
+                setNewQuestion({ ...newQuestion, content: e.target.value })
+              }
+            />
+            <label>Question Type</label>
+            <select
+              className="form-control"
+              value={newQuestion.type}
+              onChange={(e) => setNewQuestion({ ...newQuestion, type: e.target.value })}
+            >
+              <option value="text">Text</option>
+              <option value="radio">Radio</option>
+              <option value="checkbox">Checkbox</option>
+            </select>
+
+            <button
+              className="btn btn-primary mt-3"
+              onClick={() => {
+                addQuestionHandler(form.id, newQuestion);
+              }}
+            >
+              Add Question
+            </button>
+          </div>
+        </Modal.Body>
+        <Modal.Footer>{modalDetails.footer}</Modal.Footer>
+      </Modal>
+
       {form && (
         <>
           <h3>
@@ -81,34 +151,25 @@ const Form = () => {
           </h3>
           <p>{form.description}</p>
           <div className="d-flex d-grid justify-content-center align-items-center gap-3">
-            <button
+            <Button
+              variant="light"
+              size="sm"
+              onClick={() => setModalShow_1(true)}
+              className="rounded-circle text-success p-1 px-2 shadow-sm"
+            >
+              <IoIosAddCircleOutline />
+            </Button>
+            <Button
+              variant="light"
+              size="sm"
+              className="rounded-circle text-danger mx-2 shadow-sm"
               onClick={() => {
-                setShow(1);
+                deleteSurvey(form.id);
               }}
             >
-              Edit Form
-            </button>
-            <button
-              onClick={() => {
-                setShow(2);
-              }}
-            >
-              Responses
-            </button>
+              <MdOutlineDeleteOutline />
+            </Button>
           </div>
-          {/* <div className="d-flex justify-content-center mt-5">
-            {show == 1 ? (
-              <Card>
-                <Card.Body>
-                  <Card.Title>{item.name}</Card.Title>
-                  <Card.Text>{item.description}</Card.Text>
-                  <Card.Text>{item.description}</Card.Text>
-                </Card.Body>
-              </Card>
-            ) : (
-              <div>this is form responses page.</div>
-            )}
-          </div> */}
 
           <div>
             {form.questions.map((item, i) => {
