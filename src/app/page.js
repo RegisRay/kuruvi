@@ -1,13 +1,17 @@
 'use client';
 
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { getAudioTranslation } from './service';
 
 import Auth from 'src/components/Auth';
 import { useAuth, VIEWS } from 'src/components/AuthProvider';
 
+import Forms from './forms/page';
+import Button from 'react-bootstrap/Button';
+
 export default function Home() {
   const { initial, user, view, signOut } = useAuth();
+  const { push } = useRouter();
 
   if (initial) {
     return <div className="card h-72">Loading...</div>;
@@ -19,25 +23,20 @@ export default function Home() {
 
   if (user) {
     return (
-      <div className="card">
-        <h2>Welcome!</h2>
-        <code className="highlight">{user.role}</code>
-        <Link className="button" href="/profile">
-          Go to Profile
-        </Link>
-        <button
-          onClick={() => {
-            getAudioTranslation();
-          }}
-        >
-          bro!
-        </button>
-        <button type="button" className="button-inverse" onClick={signOut}>
-          Sign Out
-        </button>
-      </div>
+      <>
+        <div className="d-flex justify-content-between">
+          <h2>வணக்கம் !</h2>
+          <Button
+            varient="info"
+            onClick={() => {
+              push('/profile');
+            }}
+          >
+            Profile
+          </Button>
+        </div>
+        <Forms />
+      </>
     );
   }
-
-  return <Auth view={view} />;
 }
