@@ -15,6 +15,9 @@ export async function GET(request, { params }, response) {
       where: {
         id,
       },
+      include:{
+        questions: true
+      }
     });
 
     response = new Response(JSON.stringify({message: 'Form fetched successfully', form}), {
