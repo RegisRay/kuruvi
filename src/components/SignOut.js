@@ -1,6 +1,7 @@
 'use client';
 
 import { useAuth } from './AuthProvider';
+import Button from 'react-bootstrap/Button';
 
 export default function SignOut() {
   const { signOut } = useAuth();
@@ -17,8 +18,8 @@ export default function SignOut() {
   }
 
   return (
-    <button type="button" className="button-inverse" onClick={handleSignOut}>
+    <Button variant="danger" onClick={handleSignOut}>
       Sign Out
-    </button>
+    </Button>
   );
 }
