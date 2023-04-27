@@ -10,6 +10,9 @@ export default function SignOut() {
 
     if (error) {
       console.error('ERROR signing out:', error);
+    } else {
+      console.log('Successfully signed out');
+      localStorage.removeItem('uid');
     }
   }
 

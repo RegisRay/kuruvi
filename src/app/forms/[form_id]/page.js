@@ -33,13 +33,13 @@ const Form = () => {
   });
 
   const updateQuestionHandler = async (form_id, question_id, questionDetails) => {
-    const { data, error } = await updateQuestion(form_id, questionDetails);
+    const { data, error } = await updateQuestion(question_id, questionDetails);
     if (data) {
       console.log(data);
-      const { data, error } = await addChoice(question_id, {
+      const { da, err } = await addChoice(question_id, {
         name: newQuestion.choice,
       });
-      if (data) {
+      if (da) {
         setModalShow(false);
       }
     } else {
@@ -168,7 +168,7 @@ const Form = () => {
                               type="text"
                               className="form-control"
                               id="choice"
-                              defaultValue={item.choice}
+                              defaultValue={item.choice[0]}
                               onChange={(e) => {
                                 setNewQuestion({
                                   ...newQuestion,
@@ -186,8 +186,8 @@ const Form = () => {
                       <button
                         className="btn btn-primary"
                         onClick={() => {
+                          console.log(form_id, item.id, newQuestion);
                           updateQuestionHandler(form_id, item.id, newQuestion);
-                          setModalShow(false);
                         }}
                       >
                         Save
