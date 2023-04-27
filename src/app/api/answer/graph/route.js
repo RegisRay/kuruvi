@@ -5,12 +5,23 @@ export async function GET(request, response){
     const {searchParams} = new URL(request.url);
     const qid = searchParams.get('qidRes');
     try{
-      const choices = await prisma.choice.findMany({
+      const choices = await prisma.questions.findMany({
         where:{
           id: qid
-        }
+        },
+        
       })
-      console.log(choices)
+      let choice_id=[]
+      choices.map((choice)=>{choice_id.push(choice.id)})
+      let answerRes = [];
+      for(let i in choice_id){
+        const answers = await prisma.answers.count({
+            where:{
+                choice_id: choice_id[i]         
+            }
+        })
+        answerRes.push(answers)
+      }
     }
     catch (error) {
       console.log(error);
