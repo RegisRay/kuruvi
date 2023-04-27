@@ -10,6 +10,9 @@ import Button from 'react-bootstrap/Button';
 import Link from 'next/link';
 import { FaPencilAlt } from 'react-icons/fa';
 import { MdOutlineDeleteOutline } from 'react-icons/md';
+import { updateQuestion } from 'src/app/services/question/service';
+import { addChoice } from 'src/app/services/choice/service';
+import Modal from 'react-bootstrap/Modal';
 
 const Form = () => {
   const { form_id } = useParams();
@@ -17,6 +20,32 @@ const Form = () => {
   const [show, setShow] = useState(1);
   const [form, setForm] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [modalShow, setModalShow] = useState(false);
+  const [modalDetails, setModalDetails] = useState({
+    title: '',
+    body: '',
+    footer: '',
+  });
+  const [newQuestion, setNewQuestion] = useState({
+    content: '',
+    type: '',
+    choice: [],
+  });
+
+  const updateQuestionHandler = async (form_id, question_id, questionDetails) => {
+    const { data, error } = await updateQuestion(form_id, questionDetails);
+    if (data) {
+      console.log(data);
+      const { data, error } = await addChoice(question_id, {
+        name: newQuestion.choice,
+      });
+      if (data) {
+        setModalShow(false);
+      }
+    } else {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     (async () => {
@@ -33,8 +62,8 @@ const Form = () => {
   }, []);
 
   useEffect(() => {
-    console.log(form);
-  }, [form]);
+    console.log(newQuestion);
+  }, [newQuestion]);
 
   return (
     <>
@@ -84,43 +113,134 @@ const Form = () => {
           <div>
             {form.questions.map((item, i) => {
               return (
-                <Card key={i} className="mt-4">
-                  <Card.Body className="d-flex justify-content-between align-items-center">
-                    <Card.Title>{item.content}</Card.Title>
-                    <Card.Text>{item.type}</Card.Text>
-                    <Card.Text>
-                      <OverlayTrigger
-                        placement="bottom"
-                        overlay={<Tooltip>Edit</Tooltip>}
-                      >
-                        <Button
-                          variant="light"
-                          size="sm"
-                          className="rounded-circle text-warning mx-2 shadow-sm"
-                        >
-                          <Link href={`/forms/${form.id}`}>
-                            <FaPencilAlt />
-                          </Link>
-                        </Button>
-                      </OverlayTrigger>
-                      <OverlayTrigger
-                        placement="bottom"
-                        overlay={<Tooltip>Delete</Tooltip>}
-                      >
-                        <Button
-                          variant="light"
-                          size="sm"
-                          className="rounded-circle text-danger mx-2 shadow-sm"
-                          onClick={() => {
-                            deleteSurvey(form.id);
+                <section key={i}>
+                  <Modal
+                    size="lg"
+                    aria-labelledby="contained-modal-title-vcenter"
+                    centered
+                    show={modalShow}
+                    onHide={() => {
+                      setModalShow(false);
+                    }}
+                  >
+                    <Modal.Header closeButton>
+                      <Modal.Title id="contained-modal-title-vcenter">
+                        Update Question
+                      </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                      <div className="form-group">
+                        <label htmlFor="content">Question Content</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="content"
+                          defaultValue={item.content}
+                          onChange={(e) => {
+                            setNewQuestion({
+                              ...newQuestion,
+                              content: e.target.value,
+                            });
+                          }}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label htmlFor="type">Question Type</label>
+                        <select
+                          className="form-control"
+                          id="type"
+                          defaultValue={item.type}
+                          onChange={(e) => {
+                            setNewQuestion({
+                              ...newQuestion,
+                              type: e.target.value,
+                            });
                           }}
                         >
-                          <MdOutlineDeleteOutline />
-                        </Button>
-                      </OverlayTrigger>
-                    </Card.Text>
-                  </Card.Body>
-                </Card>
+                          <option value="text">Text</option>
+                          <option value="radio">Radio</option>
+                          <option value="checkbox">Checkbox</option>
+                        </select>
+                        {newQuestion.type == 'radio' || newQuestion.type == 'checkbox' ? (
+                          <div className="form-group">
+                            <label htmlFor="choice">Choices</label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              id="choice"
+                              defaultValue={item.choice}
+                              onChange={(e) => {
+                                setNewQuestion({
+                                  ...newQuestion,
+                                  choice: e.target.value,
+                                });
+                              }}
+                            />
+                          </div>
+                        ) : (
+                          <></>
+                        )}
+                      </div>
+                    </Modal.Body>
+                    <Modal.Footer>
+                      <button
+                        className="btn btn-primary"
+                        onClick={() => {
+                          updateQuestionHandler(form_id, item.id, newQuestion);
+                          setModalShow(false);
+                        }}
+                      >
+                        Save
+                      </button>
+                      <button
+                        className="btn btn-secondary"
+                        onClick={() => {
+                          setModalShow(false);
+                        }}
+                      >
+                        Cancel
+                      </button>
+                    </Modal.Footer>
+                  </Modal>
+                  <Card className="mt-4">
+                    <Card.Body className="d-flex justify-content-between align-items-center">
+                      <Card.Title>{item.content}</Card.Title>
+                      <Card.Text>{item.type}</Card.Text>
+                      <Card.Text>
+                        <OverlayTrigger
+                          placement="bottom"
+                          overlay={<Tooltip>Edit</Tooltip>}
+                        >
+                          <Button
+                            variant="light"
+                            size="sm"
+                            className="rounded-circle text-warning mx-2 shadow-sm"
+                            onClick={() => {
+                              setModalShow(true);
+                            }}
+                          >
+                            <FaPencilAlt />
+                          </Button>
+                        </OverlayTrigger>
+                        <OverlayTrigger
+                          placement="bottom"
+                          overlay={<Tooltip>Delete</Tooltip>}
+                        >
+                          <Button
+                            variant="light"
+                            size="sm"
+                            className="rounded-circle text-danger mx-2 shadow-sm"
+                            onClick={() => {
+                              deleteSurvey(form.id);
+                            }}
+                          >
+                            <MdOutlineDeleteOutline />
+                          </Button>
+                        </OverlayTrigger>
+                      </Card.Text>
+                    </Card.Body>
+                  </Card>
+                </section>
               );
             })}
           </div>

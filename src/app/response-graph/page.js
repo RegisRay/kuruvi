@@ -1,40 +1,64 @@
 'use client'
 
-import React from "react";
-import {Chart} from "chart.js";
-import { testData } from "./test-data";
+import {useEffect, useState } from "react";
+import {Chart} from "chart.js/auto";
+import { CategoryScale } from "chart.js";
+// import { testData } from "./test-data";
+// import { getForm } from "../forms/[form_id]/service";
+import { BarChart } from "./barChart";
+import { getForm } from "../forms/[form_id]/service";
+import { getGraphData } from "../services/answer/service";
+
+Chart.register(CategoryScale);
+
+
 
 export default function CardBarChart() {
-  React.useEffect(() => {
-    let config = {
-      type: "bar",
-      data: testData
-    };
-    let ctx = document.getElementById("bar-chart").getContext("2d");
-    window.myBar = new Chart(ctx, config);
-  }, []);
+  const [graphCount, setGraphCount] = useState(null);
+  
+  useEffect(()=>{
+    (async()=>{
+      const qid = "4d6271d7-a389-4133-8151-8a3609781a96"
+      const {data, error} = await getGraphData(qid)
+      if(data){
+        // console.log(data);
+        setGraphCount(data);
+      }
+    })();
+  },[])
+  
+  let chartData;
+  if(graphCount){
+    console.log(graphCount)
+    chartData = {
+      labels: graphCount.map((data) => data.name),  //Choices
+      datasets: [
+        {
+          label: "Results",
+          data: graphCount.map((data) => data.count), //count
+          backgroundColor: [
+            "rgba(75,192,192,1)",
+            "#ecf0f1",
+            "#50AF95",
+            "#f3ba2f",
+            "#2a71d0"
+          ],
+          borderColor: "black",
+          borderWidth: 2
+        }
+      ]
+    }
+  }
   return (
     <>
-      <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
-        <div className="rounded-t mb-0 px-4 py-3 bg-transparent">
-          <div className="flex flex-wrap items-center">
-            <div className="relative w-full max-w-full flex-grow flex-1">
-              <h6 className="uppercase text-blueGray-400 mb-1 text-xs font-semibold">
-                Results
-              </h6>
-              <h2 className="text-blueGray-700 text-xl font-semibold">
-                Question 1
-              </h2>
-            </div>
-          </div>
-        </div>
-        <div className="p-4 flex-auto">
-          {/* Chart */}
-          <div className="relative h-150-px">
-            <canvas id="bar-chart"></canvas>
-          </div>
-        </div>
+      {chartData?(
+      <>
+        <div className="App">
+        <p>Using Chart.js in React</p>
+        <BarChart chartData={chartData}/>
       </div>
+      </>):(<>Loading..</>)}
+      
     </>
   );
 }
