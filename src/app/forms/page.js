@@ -144,15 +144,15 @@ const Forms = () => {
                           placement="bottom"
                           overlay={<Tooltip>Edit</Tooltip>}
                         >
-                          <Button
-                            variant="light"
-                            size="sm"
-                            className="rounded-circle text-warning mx-2 shadow-sm"
-                          >
-                            <Link href={`/forms/${form.id}`}>
+                          <Link href={`/forms/${form.id}`}>
+                            <Button
+                              variant="light"
+                              size="sm"
+                              className="rounded-circle text-warning mx-2 shadow-sm"
+                            >
                               <FaPencilAlt />
-                            </Link>
-                          </Button>
+                            </Button>
+                          </Link>
                         </OverlayTrigger>
                         <OverlayTrigger
                           placement="bottom"

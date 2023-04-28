@@ -2,7 +2,6 @@
 
 import 'regenerator-runtime/runtime';
 import { useRouter } from 'next/navigation';
-import { getAudioTranslation } from './service';
 import Button from 'react-bootstrap/Button';
 
 import Auth from 'src/components/Auth';
