@@ -39,7 +39,8 @@ const SignUp = () => {
         <CarouselFadeExample />
       </div>
       <div className="text-light d-flex flex-column justify-content-center align-items-center col-4 rounded-4 glass-css ms-5">
-        <h2 className="mt-3 w-full text-center">Create Account</h2>
+        <h2 className="mb-1 w-full text-center">Kuruvi 🐦</h2>
+        <h2 className="mt-3 w-full text-center">CREATE ACCOUNT</h2>
         <Formik
           initialValues={{
             email: '',
