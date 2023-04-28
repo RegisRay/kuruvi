@@ -1,5 +1,6 @@
 'use client';
 
+import 'regenerator-runtime/runtime';
 import { useEffect, useState } from 'react';
 const { io } = require('socket.io-client');
 import { useRouter } from 'next/navigation';
@@ -36,8 +37,9 @@ const AudioRecorder = () => {
   };
 
   const onStop = async (recordedBlob) => {
-    let blob = new Blob(chunks, { type: 'audio/webm' });
-    let testAudioRecord = URL.createObjectURL(recordedBlob);
+    // let chunks = [];
+    // let blob = new Blob(chunks, { type: 'audio/webm' });
+    let testAudioRecord = URL.createObjectURL(recordedBlob.blob);
     const nice = await getblob(testAudioRecord);
     console.log(nice);
     const data = new FormData();

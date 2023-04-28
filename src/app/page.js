@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import Button from 'react-bootstrap/Button';
-
+import 'regenerator-runtime/runtime';
 import Auth from 'src/components/Auth';
 import { useAuth, VIEWS } from 'src/components/AuthProvider';
 import { useEffect, useState } from 'react';
