@@ -6,9 +6,6 @@ import 'src/styles/globals.scss';
 
 // do not cache this layout
 export const revalidate = 0;
-export const metadata = {
-  title: 'Kuruvi'
-}
 
 export const metadata = {
   title: 'Best Place for survey',
