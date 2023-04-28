@@ -1,1 +1,13 @@
 @import 'bootstrap/dist/css/bootstrap.min.css';
+
+.chart{
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+}
+
+.chart-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

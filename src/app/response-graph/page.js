@@ -12,11 +12,12 @@ import { getGraphData } from '../services/answer/service';
 Chart.register(CategoryScale);
 
 export default function CardBarChart({ qid }) {
+console.log("Hello")
   const [graphCount, setGraphCount] = useState(null);
 
   useEffect(() => {
     (async () => {
-      const qid = '2578fa76-7873-4027-8368-f8dfa2309567';
+      console.log("Hello")
       const { data, error } = await getGraphData(qid);
       if (data) {
         // console.log(data);
@@ -51,8 +52,7 @@ export default function CardBarChart({ qid }) {
     <>
       {chartData ? (
         <>
-          <div className="App">
-            <p>Using Chart.js in React</p>
+          <div >
             <BarChart chartData={chartData} />
           </div>
         </>
