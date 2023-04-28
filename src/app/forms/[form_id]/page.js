@@ -106,7 +106,6 @@ const Form = () => {
     console.log(data, error);
     if (data) {
       setLoading(false);
-      console.log('it is the' + data.form.name);
       setForm(data.form);
     } else {
       console.log(error, 'sadd');

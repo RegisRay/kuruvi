@@ -57,7 +57,7 @@ export async function GET(request, response) {
 export async function POST(request, response) {
   const { searchParams } = new URL(request.url);
   const qid = searchParams.get('qid');
-  const cid = searchParams.get('cid');
+
   const { value } = await request.json();
 
   try {
@@ -65,7 +65,6 @@ export async function POST(request, response) {
       data: {
         value,
         question_id: qid,
-        choice_id: cid,
       },
     });
 

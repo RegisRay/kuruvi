@@ -1,13 +1,11 @@
 'use client';
 
-import 'regenerator-runtime/runtime';
 import { useRouter } from 'next/navigation';
-import { getAudioTranslation } from './service';
 import Button from 'react-bootstrap/Button';
-
+import 'regenerator-runtime/runtime';
 import Auth from 'src/components/Auth';
 import { useAuth, VIEWS } from 'src/components/AuthProvider';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { TextWriter } from './writer';
 import Link from 'next/link';
 import Forms from './forms/page';
@@ -18,60 +16,99 @@ export default function Home() {
   const { initial, user, view, signOut } = useAuth();
 
   const [formData, setFormData] = useState(null);
+  const getblob = async (testAudioRecord) => {
+    let blobb = await fetch(testAudioRecord).then((r) => r.blob());
+    console.log(blobb);
+    return blobb;
+  };
 
-  // const handleFile = async (e) => {
-  //   if (e.target.files && e.target.files[0]) {
-  //     const file = e.target.files[0];
+  useEffect(() => {
+    const getAudio = async () => {
+      let chunks = [];
+      let recorder;
 
-  //     const data = new FormData();
-  //     data.append('file', file);
-  //     data.append('model', 'whisper-1');
-  //     setFormData(data);
+      try {
+        //wait for the stream promise to resolve
+        let stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        recorder = new MediaRecorder(stream);
+        recorder.ondataavailable = async (e) => {
+          chunks.push(e.data);
+          // if (recorder.state === 'inactive') {
+          //   let blob = new Blob(chunks, { type: 'audio/webm' });
+          //   let testAudioRecord = URL.createObjectURL(blob);
+          //   const nice = await getblob(testAudioRecord);
+          //   console.log(nice);
+          //   const data = new FormData();
+          //   data.append('file', nice, 'test.webm');
+          //   data.append('model', 'whisper-1');
+          //   sendAudio(data);
+          // }
+        };
+        recorder.start(1000);
 
-  //     // check if the size is less than 25MB
-  //     if (file.size > 25 * 1024 * 1024) {
-  //       alert('Please upload an audio file less than 25MB');
-  //       return;
-  //     }
-  //   }
-  // };
+        setTimeout(() => {
+          recorder.stop();
+        }, 2000);
+      } catch (e) {
+        console.log('error getting stream', e);
+      }
+    };
+    // getAudio();
+  }, []);
+
+  const handleFile = async (e) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+
+      const data = new FormData();
+      data.append('file', file);
+      data.append('model', 'whisper-1');
+      setFormData(data);
+
+      // check if the size is less than 25MB
+      if (file.size > 25 * 1024 * 1024) {
+        alert('Please upload an audio file less than 25MB');
+        return;
+      }
+    }
+  };
 
   const [convertedText, setConvertedText] = useState('');
   const [translateText, setTranslateText] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // const sendAudio = async () => {
-  //   setLoading(true);
-  //   const res = await fetch('https://api.openai.com/v1/audio/transcriptions', {
-  //     headers: {
-  //       Authorization: `Bearer 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`,
-  //     },
-  //     method: 'POST',
-  //     body: formData,
-  //   });
+  const sendAudio = async (dat) => {
+    setLoading(true);
+    const res = await fetch('https://api.openai.com/v1/audio/transcriptions', {
+      headers: {
+        Authorization: `Bearer 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`,
+      },
+      method: 'POST',
+      body: dat,
+    });
 
-  //   const data = await res.json();
+    const data = await res.json();
 
-  //   setConvertedText(data.text);
-  //   const res1 = await fetch('https://api.openai.com/v1/audio/translations', {
-  //     headers: {
-  //       Authorization: `Bearer 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`,
-  //     },
-  //     method: 'POST',
-  //     body: formData,
-  //   });
-  //   const data1 = await res1.json();
+    setConvertedText(data.text);
+    const res1 = await fetch('https://api.openai.com/v1/audio/translations', {
+      headers: {
+        Authorization: `Bearer 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`,
+      },
+      method: 'POST',
+      body: dat,
+    });
+    const data1 = await res1.json();
 
-  //   setTranslateText(data1.text);
-  //   setLoading(false);
-  // };
+    setTranslateText(data1.text);
+    setLoading(false);
+  };
 
-  // const { transcript, listening, resetTranscript, browserSupportsSpeechRecognition } =
-  //   useSpeechRecognition();
+  const { transcript, listening, resetTranscript, browserSupportsSpeechRecognition } =
+    useSpeechRecognition();
 
-  // if (!browserSupportsSpeechRecognition) {
-  //   return <span>Browser doesn't support speech recognition.</span>;
-  // }
+  if (!browserSupportsSpeechRecognition) {
+    return <span>Browser doesn't support speech recognition.</span>;
+  }
 
   if (initial) {
     return <div className="card h-72">Loading...</div>;
@@ -84,7 +121,7 @@ export default function Home() {
   if (user) {
     return (
       <>
-        {/* <section className="card">
+        <section className="card">
           <h2>Welcome!</h2>
           <code className="highlight">{user.role}</code>
           <Link className="button" href="/profile">
@@ -111,15 +148,25 @@ export default function Home() {
               <TextWriter text={translateText} delay={10} />
             </>
           )}
-          )}
           <div>
-            <p>Microphone: {listening ? <>on</> : <>off</>}</p>
+            <p>Microphone: {listening ? 'on' : 'off'}</p>
             <button onClick={SpeechRecognition.startListening}>Start</button>
             <button onClick={SpeechRecognition.stopListening}>Stop</button>
             <button onClick={resetTranscript}>Reset</button>
             <p>{transcript}</p>
           </div>
-        </section> */}
+        </section>
+        <div className="d-flex justify-content-between">
+          <h2>வணக்கம் !</h2>
+          <Button
+            varient="info"
+            onClick={() => {
+              router.push('/profile');
+            }}
+          >
+            Profile
+          </Button>
+        </div>
         <Forms />
       </>
     );
