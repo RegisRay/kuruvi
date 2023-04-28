@@ -13,7 +13,6 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import { createForm, deleteForm, getAllForms } from '../services/form/service';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Spinner from '@/components/Spinner';
 
 const Forms = () => {
   const router = useRouter();
