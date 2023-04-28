@@ -41,7 +41,7 @@ const Form = () => {
   const onStop = async (recordedBlob) => {
     let testAudioRecord = URL.createObjectURL(recordedBlob.blob);
     const nice = await getblob(testAudioRecord);
-    console.log(nice);
+    // console.log(nice);
     const da = new FormData();
     da.append('file', nice, 'test.webm');
     da.append('model', 'whisper-1');
@@ -250,6 +250,7 @@ const Form = () => {
                           variant="none"
                           onClick={() => {
                             setRec(i + 1);
+                            // console.log(rec);
                             setRecord(!record);
                           }}
                         >

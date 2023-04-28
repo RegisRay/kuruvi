@@ -10,6 +10,7 @@ import { TextWriter } from './writer';
 import Link from 'next/link';
 import Forms from './forms/page';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+import Spinner from '@/components/Spinner';
 
 export default function Home() {
   const router = useRouter();
@@ -111,7 +112,7 @@ export default function Home() {
   // }
 
   if (initial) {
-    return <div className="card h-72">Loading...</div>;
+    return <div className="card h-72"><Spinner/></div>;
   }
 
   if (view === VIEWS.UPDATE_PASSWORD) {

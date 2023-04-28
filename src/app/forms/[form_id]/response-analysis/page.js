@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { getForm } from "src/app/forms/[form_id]/service";
 import { useParams } from "next/navigation";
 import CardBarChart from "src/app/response-graph/page";
+import Spinner from "@/components/Spinner";
 
 export default function ResponseAnalysis(){
     const {form_id} = useParams();
@@ -35,7 +36,7 @@ export default function ResponseAnalysis(){
                
             })}
         </>
-        ):(<>Loading</>)}
+        ):(<><Spinner/></>)}
         
         </div>
     );

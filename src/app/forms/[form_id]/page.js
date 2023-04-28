@@ -24,6 +24,7 @@ import Modal from 'react-bootstrap/Modal';
 import { IoIosAddCircleOutline } from 'react-icons/io';
 import { ReactMic } from 'react-mic';
 import { getText } from 'src/app/speech-test/service';
+import TextToSpeech from './speech_to_text';
 
 const Form = () => {
   const router = useRouter();
@@ -207,7 +208,7 @@ const Form = () => {
               className="form-control mt-3"
               value={newQuestion.content}
               onChange={(e) =>
-                setNewQuestion({ ...newQuestion, content: e.target.value })
+                setNewQuestion( { ...newQuestion, content: e.target.value })
               }
             />
             <label>Question Type</label>
@@ -439,13 +440,9 @@ const Form = () => {
                             <MdOutlineDeleteOutline />
                           </Button>
                         </OverlayTrigger>
-                        <button
-                          onClick={() => {
-                            speak(item.content);
-                          }}
-                        >
-                          Speak{' '}
-                        </button>
+                        {/* <button onClick={()=>{speak(item.content)}}>Speak </button> */}
+                        <TextToSpeech text={item.content}/>
+                        
                       </Card.Text>
                     </Card.Body>
                   </Card>
@@ -472,14 +469,8 @@ const Form = () => {
                             className="d-flex justify-content-between align-items-center"
                           >
                             <p>{ans.value}</p>
-
-                            <button
-                              onClick={() => {
-                                speak(ans.value);
-                              }}
-                            >
-                              Speak{' '}
-                            </button>
+                            {/* <button onClick={()=>{speak(ans.value)}}>Speak </button> */}
+                            <TextToSpeech text={ans.value}/>
                             {/* <p>{ans.content}</p> */}
                           </div>
                         </>
