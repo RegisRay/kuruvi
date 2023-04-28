@@ -8,6 +8,7 @@ import { CategoryScale } from 'chart.js';
 import { BarChart } from './barChart';
 import { getForm } from '../forms/[form_id]/service';
 import { getGraphData } from '../services/answer/service';
+import Spinner from '@/components/Spinner';
 
 Chart.register(CategoryScale);
 
@@ -57,7 +58,7 @@ console.log("Hello")
           </div>
         </div>
       ) : (
-        <>Loading..</>
+        <><Spinner/></>
       )}
     </>
   );

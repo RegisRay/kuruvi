@@ -208,7 +208,7 @@ const Form = () => {
               className="form-control mt-3"
               value={newQuestion.content}
               onChange={(e) =>
-                setNewQuestion({ ...newQuestion, content: e.target.value })
+                setNewQuestion( { ...newQuestion, content: e.target.value })
               }
             />
             <label>Question Type</label>

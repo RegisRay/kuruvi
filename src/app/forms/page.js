@@ -13,6 +13,7 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import { createForm, deleteForm, getAllForms } from '../services/form/service';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Spinner from '@/components/Spinner';
 
 const Forms = () => {
   const router = useRouter();
@@ -121,7 +122,7 @@ const Forms = () => {
         <div className="mt-4">
           <h2>Recent Forms</h2>
           {loading ? (
-            <p>Loading..</p>
+            <p><Spinner/></p>
           ) : (
             <>
               <Table hover>
