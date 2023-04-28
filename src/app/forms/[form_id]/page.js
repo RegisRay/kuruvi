@@ -35,10 +35,15 @@ const Form = () => {
   });
   const [newQuestion, setNewQuestion] = useState({
     content: '',
-    type: '',
+    type: 'text',
     choice: '',
   });
+  const [questionid, setQuestionid] = useState('');
+  const [choicelist, setChoicelist] = useState([]);
+  const [canshow, setCanshow] = useState(false);
+  const [instring, setString] = useState('');
 
+  console.log('choice list comes here ' + choicelist);
   const updateQuestionHandler = async (form_id, question_id, questionDetails) => {
     const { data, error } = await updateQuestion(question_id, questionDetails);
     if (data) {
@@ -55,15 +60,32 @@ const Form = () => {
   };
 
   const addQuestionHandler = async (form_id, questionDetails) => {
+    console.log(questionDetails);
     const { data, error } = await addQuestion(form_id, questionDetails);
+    setQuestionid(data.question.id);
     if (data) {
-      console.log(data);
-      // const { da, err } = await addChoice(data.question.id, {
-      //   name: newQuestion.choice,
-      // });
-      // if (da) {
-      // }
-      setModalShow_1(false);
+      if (questionDetails.type == 'text') {
+        console.log(data);
+        setModalShow_1(false);
+        getAllQuestions();
+      } else if (questionDetails.type == 'radio') {
+        getAllQuestions();
+        setCanshow(true);
+      } else if (questionDetails.type == 'checkbox') {
+        getAllQuestions();
+        setCanshow(true);
+      } else {
+        console.log(error);
+      }
+    } else {
+      console.log(error);
+    }
+  };
+
+  const addChoiceHandler = async (questionid, instring) => {
+    console.log(instring);
+    const { data, error } = await addChoice(questionid, instring);
+    if (data) {
       getAllQuestions();
     } else {
       console.log(error);
@@ -113,7 +135,7 @@ const Form = () => {
           <Modal.Title>Add Question to {form?.name} </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <div className="d-flex flex-column">
+          <div className="d-flex flex-column d-grid gap-2">
             <label>Question</label>
             <input
               type="text"
@@ -133,7 +155,6 @@ const Form = () => {
               <option value="radio">Radio</option>
               <option value="checkbox">Checkbox</option>
             </select>
-
             <button
               className="btn btn-primary mt-3"
               onClick={() => {
@@ -142,6 +163,41 @@ const Form = () => {
             >
               Add Question
             </button>
+            <button
+              className="btn btn-primary mt-3"
+              onClick={() => {
+                setModalShow_1(false);
+              }}
+            >
+              Close
+            </button>
+            <span className="my-3">
+              {canshow && newQuestion.type == 'radio' ? (
+                <>
+                  <input
+                    type="text"
+                    className="form-control mb-4"
+                    placeholder="enter your choice"
+                    onChange={(e) => {
+                      setString(e.target.value);
+                    }}
+                  />
+                  <Button
+                    variant="success"
+                    onClick={() => {
+                      addChoiceHandler(questionid, instring);
+                    }}
+                  >
+                    Add Choice
+                  </Button>
+                </>
+              ) : null}
+              {canshow && newQuestion.type == 'checkbox' ? (
+                <div>
+                  <label>this is checkboxes</label>
+                </div>
+              ) : null}
+            </span>
           </div>
         </Modal.Body>
         <Modal.Footer>{modalDetails.footer}</Modal.Footer>
