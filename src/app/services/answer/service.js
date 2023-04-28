@@ -45,7 +45,6 @@ export const updateAnswer = async (answer_id, answerDetails) => {
   return { data, error };
 };
 
-
 export const getGraphData = async (question_id) => {
   const options = {
     method: 'get',
