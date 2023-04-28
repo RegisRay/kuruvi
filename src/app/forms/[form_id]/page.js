@@ -62,7 +62,7 @@ const Form = () => {
       // });
       // if (da) {
       // }
-      setModalShow(false);
+      setModalShow_1(false);
       getAllQuestions();
     } else {
       console.log(error);
@@ -180,7 +180,7 @@ const Form = () => {
                 setIsResponse(!isResponse);
               }}
             >
-              Responses
+              {isResponse ? 'View Form' : 'View Responses'}
             </Button>
           </div>
 
@@ -320,19 +320,29 @@ const Form = () => {
           {isResponse && form.questions?.length > 0 && (
             <div className="mt-4">
               <h3>Responses</h3>
-              <div className="d-flex justify-content-between align-items-center">
-                <h5>Question</h5>
-                <h5>Answer</h5>
-              </div>
-              {form.questions.answers?.map((item, i) => {
+
+              {form.questions.map((ques, i) => {
                 return (
-                  <div
-                    key={i}
-                    className="d-flex justify-content-between align-items-center"
-                  >
-                    <p>{item.value}</p>
-                    <p>{new Date(item.created_at)}</p>
-                  </div>
+                  <>
+                    <div className="d-flex justify-content-start align-items-center">
+                      <h5>
+                        {i + 1}. {ques.content}
+                      </h5>
+                    </div>
+                    {ques.answers.map((ans, j) => {
+                      return (
+                        <>
+                          <div
+                            key={j}
+                            className="d-flex justify-content-between align-items-center"
+                          >
+                            <p>{ans.value}</p>
+                            {/* <p>{ans.content}</p> */}
+                          </div>
+                        </>
+                      );
+                    })}
+                  </>
                 );
               })}
             </div>
