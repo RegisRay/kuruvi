@@ -51,11 +51,11 @@ console.log("Hello")
   return (
     <>
       {chartData ? (
-        <>
+        <div className='d-flex justify-content-center align-items-center'>
           <div >
             <BarChart chartData={chartData} />
           </div>
-        </>
+        </div>
       ) : (
         <>Loading..</>
       )}
