@@ -1,5 +1,7 @@
 // view a single form
 'use client';
+
+import 'regenerator-runtime/runtime';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { redirect, useParams } from 'next/navigation';
@@ -17,29 +19,51 @@ import { deleteForm } from 'src/app/services/form/service';
 import Modal from 'react-bootstrap/Modal';
 import { IoIosAddCircleOutline } from 'react-icons/io';
 import { addAnswer } from 'src/app/services/answer/service';
+import { ReactMic } from 'react-mic';
+import { getText } from 'src/app/speech-test/service';
+import { AiOutlineAudio } from 'react-icons/ai';
 
 const Form = () => {
   const { form_id } = useParams();
   const [form, setForm] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [record, setRecord] = useState(false);
+  const [rec, setRec] = useState(null);
+  const [ansBuffer, setAnsBuffer] = useState({});
 
-  const [modalDetails, setModalDetails] = useState({
-    title: '',
-    body: '',
-    footer: '',
+  const [newAnswer, setNewAnswer] = useState({
+    value: '',
+    question_id: '',
   });
-  const [newAnswers, setNewAnswers] = useState([
-    {
-      value: '',
-      question_id: '',
-    },
-  ]);
+
+  const onData = (recordedBlob) => {
+    console.log('chunk of real-time data is: ', recordedBlob);
+  };
+
+  const getblob = async (testAudioRecord) => {
+    let blobb = await fetch(testAudioRecord).then((r) => r.blob());
+    console.log(blobb);
+    return blobb;
+  };
+
+  const onStop = async (recordedBlob) => {
+    let testAudioRecord = URL.createObjectURL(recordedBlob.blob);
+    const nice = await getblob(testAudioRecord);
+    console.log(nice);
+    const da = new FormData();
+    da.append('file', nice, 'test.webm');
+    da.append('model', 'whisper-1');
+    const data = await getText('translations', da);
+    if (data) {
+      console.log(data);
+      setAnsBuffer({ ...ansBuffer, [rec]: data.text });
+      setNewAnswer({ ...newAnswer, content: data.text });
+    }
+  };
 
   const getAllQuestions = async () => {
     const { data, error } = await getForm(form_id);
     console.log(data, error);
     if (data) {
-      setLoading(false);
       console.log('it is the' + data.form.name);
       setForm(data.form);
     } else {
@@ -47,11 +71,14 @@ const Form = () => {
     }
   };
 
-  const handleAddAnswers = async (e) => {
-    e.preventDefault();
-    const { data, error } = await addAnswer(form_id, newAnswers);
+  const handleAddAnswer = async (qid) => {
+    const { data, error } = await addAnswer(qid, newAnswer);
     if (data) {
       console.log(data);
+      setNewAnswer({
+        value: '',
+        question_id: '',
+      });
     } else {
       console.log(error);
     }
@@ -62,8 +89,8 @@ const Form = () => {
   }, []);
 
   useEffect(() => {
-    console.log(newAnswers);
-  }, [newAnswers]);
+    console.log(ansBuffer);
+  }, [ansBuffer]);
 
   return (
     <>
@@ -82,38 +109,45 @@ const Form = () => {
           <p>{form.description}</p>
 
           <div className="d-flex flex-column gap-3">
+            <ReactMic
+              record={record}
+              className="sound-wave mb-3"
+              onStop={onStop}
+              onData={onData}
+              strokeColor="#000000"
+              backgroundColor="#FF4081"
+            />
+
             {form.questions.map((question, i) => (
               <Card key={question.id}>
                 <Card.Body>
                   <Card.Title>
                     {i + 1}. {question.content}
                   </Card.Title>
-                  <Card.Text>
+                  <Card.Text className="d-flex flex-column">
                     {(question.type === 'text' || question.type == '') && (
-                      <input
-                        type="text"
-                        name={question.id}
-                        onChange={(e) => {
-                          setNewAnswers((prev) => {
-                            const newAnswers = [...prev];
-                            newAnswers.forEach((answer) => {
-                              if (answer.question_id == question.id) {
-                                answer.value = e.target.value;
-                              } else {
-                                newAnswers.push({
-                                  value: e.target.value,
-                                  question_id: question.id,
-                                });
-                              }
-                              // have only distinct values
-                              newAnswers.filter(
-                                (v, i, a) => a.findIndex((t) => t.value === v.value) === i
-                              );
+                      <>
+                        <input
+                          type="text"
+                          name={question.id}
+                          value={ansBuffer[i + 1] || newAnswer.value || ''}
+                          onChange={(e) => {
+                            setNewAnswer({
+                              value: e.target.value,
+                              question_id: question.id,
                             });
-                            return newAnswers;
-                          });
-                        }}
-                      />
+                          }}
+                        />
+                        <Button
+                          variant="none"
+                          onClick={() => {
+                            setRec(i + 1);
+                            setRecord(!record);
+                          }}
+                        >
+                          <AiOutlineAudio />
+                        </Button>
+                      </>
                     )}
                     {question.type === 'textarea' && <textarea name={question.id} />}
                     {(question.type === 'radio' || question.type === 'checkbox') &&
@@ -124,14 +158,9 @@ const Form = () => {
                             name={question.id}
                             value={choice.id}
                             onChange={(e) => {
-                              setNewAnswers((prev) => {
-                                const newAnswers = [...prev];
-                                newAnswers.forEach((answer) => {
-                                  if (answer.question_id === question.id) {
-                                    answer.value = e.target.value;
-                                  }
-                                });
-                                return newAnswers;
+                              setNewAnswer({
+                                value: e.target.value,
+                                question_id: question.id,
                               });
                             }}
                           />
@@ -140,6 +169,16 @@ const Form = () => {
                       ))}
                   </Card.Text>
                 </Card.Body>
+                <Card.Footer>
+                  <Button
+                    variant="primary"
+                    onClick={() => {
+                      handleAddAnswer(question.id);
+                    }}
+                  >
+                    Submit
+                  </Button>
+                </Card.Footer>
               </Card>
             ))}
           </div>

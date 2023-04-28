@@ -1,5 +1,7 @@
 // view a single form
 'use client';
+
+import 'regenerator-runtime/runtime';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { redirect, useParams } from 'next/navigation';
@@ -16,6 +18,8 @@ import { addChoice } from 'src/app/services/choice/service';
 import { deleteForm } from 'src/app/services/form/service';
 import Modal from 'react-bootstrap/Modal';
 import { IoIosAddCircleOutline } from 'react-icons/io';
+import { ReactMic } from 'react-mic';
+import { getText } from 'src/app/speech-test/service';
 
 const Form = () => {
 
@@ -28,6 +32,7 @@ const Form = () => {
   const [modalShow, setModalShow] = useState(false);
   const [isResponse, setIsResponse] = useState(false);
   const [modalShow_1, setModalShow_1] = useState(false);
+  const [record, setRecord] = useState(false);
   const [modalDetails, setModalDetails] = useState({
     title: '',
     body: '',
@@ -120,6 +125,38 @@ const Form = () => {
     }
   };
 
+  const startRecording = () => {
+    setRecord(true);
+  };
+
+  const stopRecording = () => {
+    setRecord(false);
+  };
+
+  const onData = (recordedBlob) => {
+    console.log('chunk of real-time data is: ', recordedBlob);
+  };
+
+  const getblob = async (testAudioRecord) => {
+    let blobb = await fetch(testAudioRecord).then((r) => r.blob());
+    console.log(blobb);
+    return blobb;
+  };
+
+  const onStop = async (recordedBlob) => {
+    let testAudioRecord = URL.createObjectURL(recordedBlob.blob);
+    const nice = await getblob(testAudioRecord);
+    console.log(nice);
+    const da = new FormData();
+    da.append('file', nice, 'test.webm');
+    da.append('model', 'whisper-1');
+    const data = await getText('translations', da);
+    if (data) {
+      console.log(data);
+      setNewQuestion({ ...newQuestion, content: data.text });
+    }
+  };
+
   useEffect(() => {
     getAllQuestions();
   }, []);
@@ -137,9 +174,23 @@ const Form = () => {
         <Modal.Body>
           <div className="d-flex flex-column d-grid gap-2">
             <label>Question</label>
+            <ReactMic
+              record={record}
+              className="sound-wave"
+              onStop={onStop}
+              onData={onData}
+              strokeColor="#000000"
+              backgroundColor="#FF4081"
+            />
+            <button onClick={startRecording} type="button">
+              Record
+            </button>
+            <button onClick={stopRecording} type="button">
+              Stop
+            </button>
             <input
               type="text"
-              className="form-control"
+              className="form-control mt-3"
               value={newQuestion.content}
               onChange={(e) =>
                 setNewQuestion({ ...newQuestion, content: e.target.value })
@@ -402,6 +453,7 @@ const Form = () => {
                             className="d-flex justify-content-between align-items-center"
                           >
                             <p>{ans.value}</p>
+                            <button onClick={()=>{speak(ans.value)}}>Speak </button>
                             {/* <p>{ans.content}</p> */}
                           </div>
                         </>
