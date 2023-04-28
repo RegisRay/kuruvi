@@ -402,6 +402,7 @@ const Form = () => {
                             className="d-flex justify-content-between align-items-center"
                           >
                             <p>{ans.value}</p>
+                            <button onClick={()=>{speak(ans.value)}}>Speak </button>
                             {/* <p>{ans.content}</p> */}
                           </div>
                         </>

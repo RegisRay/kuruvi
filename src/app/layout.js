@@ -6,6 +6,9 @@ import 'src/styles/globals.scss';
 
 // do not cache this layout
 export const revalidate = 0;
+export const metadata = {
+  title: 'Kuruvi'
+}
 
 const ls = League_Spartan({
   weight: '400',
