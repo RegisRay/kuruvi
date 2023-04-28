@@ -2,6 +2,9 @@
 
 import { useRouter } from 'next/navigation';
 import { getAudioTranslation } from './service';
+import Link from 'next/link';
+import Button from 'react-bootstrap/Button';
+import Forms from './forms/page';
 
 import Auth from 'src/components/Auth';
 import { useAuth, VIEWS } from 'src/components/AuthProvider';
@@ -9,6 +12,7 @@ import { useState } from 'react';
 import { TextWriter } from './writer';
 
 export default function Home() {
+  const router = useRouter();
   const { initial, user, view, signOut } = useAuth();
 
   const [formData, setFormData] = useState(null);
@@ -98,17 +102,6 @@ export default function Home() {
               <TextWriter text={translateText} delay={10} />
             </>
           )}
-        </div>
-        <div className="d-flex justify-content-between">
-          <h2>வணக்கம் !</h2>
-          <Button
-            varient="info"
-            onClick={() => {
-              router.push('/profile');
-            }}
-          >
-            Profile
-          </Button>
         </div>
         <Forms />
       </>

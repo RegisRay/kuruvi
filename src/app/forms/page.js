@@ -1,10 +1,10 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import Card from 'react-bootstrap/Card';
 import Modal from 'react-bootstrap/Modal';
 import Table from 'react-bootstrap/Table';
 import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
 import { FaPencilAlt } from 'react-icons/fa';
 import { MdOutlineDeleteOutline } from 'react-icons/md';
 import Button from 'react-bootstrap/Button';
@@ -15,6 +15,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
 const Forms = () => {
+  const router = useRouter();
   const [showmodal, setShowmodal] = useState(false);
   const [details, setDetails] = useState({
     title: null,
@@ -95,6 +96,17 @@ const Forms = () => {
           </Button>
         </Modal.Footer>
       </Modal>
+      <div className="d-flex justify-content-between">
+        <h2>வணக்கம் !</h2>
+        <Button
+          varient="info"
+          onClick={() => {
+            router.push('/profile');
+          }}
+        >
+          Profile
+        </Button>
+      </div>
       <section className="container-fluid d-flex flex-column justify-content-start">
         <Card
           style={{ width: '20rem', height: '10rem' }}
