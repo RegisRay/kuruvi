@@ -4,10 +4,6 @@ export const config = {
   runtime: 'experimental-edge',
 };
 
-export const config = {
-  runtime: 'experimental-edge',
-};
-
 //GetAnswerHandler
 //URL: http://localhost:3000/api/answer?qid=9ea3875b-23d5-4a83-8c48-d055dcc7e9f8
 
