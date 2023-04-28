@@ -48,13 +48,13 @@ const Form = () => {
   const onStop = async (recordedBlob) => {
     let testAudioRecord = URL.createObjectURL(recordedBlob.blob);
     const nice = await getblob(testAudioRecord);
-    console.log(nice);
+    // console.log(nice);
     const da = new FormData();
     da.append('file', nice, 'test.webm');
     da.append('model', 'whisper-1');
     const data = await getText('translations', da);
     if (data) {
-      console.log(data);
+      // console.log(data);
       setAnsBuffer({ ...ansBuffer, [rec]: data.text });
       setNewAnswer({ ...newAnswer, content: data.text });
     }
@@ -142,6 +142,7 @@ const Form = () => {
                           variant="none"
                           onClick={() => {
                             setRec(i + 1);
+                            // console.log(rec);
                             setRecord(!record);
                           }}
                         >
@@ -159,7 +160,7 @@ const Form = () => {
                             value={choice.id}
                             onChange={(e) => {
                               setNewAnswer({
-                                value: e.target.value,
+                                value: e.target.value ,
                                 question_id: question.id,
                               });
                             }}
