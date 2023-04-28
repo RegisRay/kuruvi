@@ -23,7 +23,7 @@ export default function ResponseAnalysis(){
     },[])
     
     return(
-        <div className="justify-content-center align-items-center">
+        <div className="">
         {questions?(
         <>  
         <h2 style={{ textAlign: 'center' }}>Response Analysis</h2>
