@@ -6,17 +6,19 @@ import Modal from 'react-bootstrap/Modal';
 import Table from 'react-bootstrap/Table';
 import Form from 'react-bootstrap/Form';
 import { FaPencilAlt } from 'react-icons/fa';
-import { MdOutlineDeleteOutline } from 'react-icons/md';
+import { MdOutlineDeleteOutline, MdOutlineShare } from 'react-icons/md';
 import Button from 'react-bootstrap/Button';
 import Tooltip from 'react-bootstrap/Tooltip';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import { createForm, deleteForm, getAllForms } from '../services/form/service';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Spinner from '@/components/Spinner';
 
 const Forms = () => {
   const router = useRouter();
   const [showmodal, setShowmodal] = useState(false);
+  const [showShareModal, setShareModal] = useState(false);
   const [details, setDetails] = useState({
     title: null,
     description: null,
@@ -26,7 +28,10 @@ const Forms = () => {
 
   const [forms, setForms] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [formLink, setFormLink] = useState('');
+  const [copyStatus, setCopyStatus] = useState('Copy');
   const uid = localStorage.getItem('uid');
+  let form_id = ''
   console.log(uid);
 
   const getForms = async () => {
@@ -52,6 +57,28 @@ const Forms = () => {
       setShowmodal(false);
     }
   };
+  const handleCopy = async () => {
+    try {
+      if (navigator.clipboard) {
+        await navigator.clipboard.writeText(formLink);
+      } else {
+        const input = document.createElement('input');
+        input.style.position = 'fixed';
+        input.style.left = '-1000px';
+        input.style.top = '-1000px';
+        input.value = text;
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand('copy');
+        document.body.removeChild(input);
+      }
+      setCopyStatus('Copied!');
+    } catch (err) {
+      console.error('Failed to copy text: ', err);
+      setCopyStatus('Copy failed');
+    }
+  
+  };
 
   const deleteSurvey = async (id) => {
     console.log('Delete triggered');
@@ -63,6 +90,11 @@ const Forms = () => {
       console.log(error);
     }
   };
+  
+  const toggleShare = (id) =>{
+    setFormLink(`http://localhost:3000/forms/${id}/view`);
+    setShareModal(!showShareModal)
+  }
 
   // console.log(data);
 
@@ -95,6 +127,32 @@ const Forms = () => {
             Create
           </Button>
         </Modal.Footer>
+      </Modal>
+      
+      {/* share your form link */}
+      <Modal show={showShareModal} onHide={setShareModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Share your survey</Modal.Title>
+        </Modal.Header>
+        {formLink?(
+        <>
+          <Modal.Body>
+            <p className="d-grid gap-3">
+              <Form.Control
+                type="text"
+                value={formLink}
+                disabled
+              />
+            </p>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleCopy} disabled={copyStatus === 'Copied!'}>
+              {copyStatus}
+              </Button>
+            </Modal.Footer>
+          </Modal.Body>
+        </>
+        ):(<><Spinner/></>)}
+        
       </Modal>
       <div className="d-flex justify-content-between">
         <h2>வணக்கம் !</h2>
@@ -167,6 +225,21 @@ const Forms = () => {
                             }}
                           >
                             <MdOutlineDeleteOutline />
+                          </Button>
+                        </OverlayTrigger>
+                        <OverlayTrigger
+                          placement="bottom"
+                          overlay={<Tooltip>Share</Tooltip>}
+                        >
+                          <Button
+                            variant="light"
+                            size="sm"
+                            className="rounded-circle text-primary mx-2 shadow-sm"
+                            onClick={()=>{
+                              toggleShare(form.id)
+                            }}
+                          >
+                            <MdOutlineShare />
                           </Button>
                         </OverlayTrigger>
                       </td>
