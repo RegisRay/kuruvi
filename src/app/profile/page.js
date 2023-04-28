@@ -32,11 +32,11 @@ export default async function Profile() {
             <Card.Text>
               LAST LOGIN: {new Date(user?.last_sign_in_at).toUTCString()}
             </Card.Text>
-            <Button variant="primary" className="me-3">
-              <Link href="/forms" className="text-decoration-none link-light">
+            <Link href="/forms" className="text-decoration-none link-light">
+              <Button variant="primary" className="me-3">
                 HOME
-              </Link>
-            </Button>
+              </Button>
+            </Link>
             <Button className="me-3" onClick={toggle}>
               Update Password
             </Button>

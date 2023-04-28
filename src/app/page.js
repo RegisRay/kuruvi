@@ -3,16 +3,13 @@
 import 'regenerator-runtime/runtime';
 import { useRouter } from 'next/navigation';
 import { getAudioTranslation } from './service';
-import Link from 'next/link';
 import Button from 'react-bootstrap/Button';
-import Forms from './forms/page';
 
 import Auth from 'src/components/Auth';
 import { useAuth, VIEWS } from 'src/components/AuthProvider';
 import { useState } from 'react';
 import { TextWriter } from './writer';
 import Link from 'next/link';
-import { Button } from 'react-bootstrap';
 import Forms from './forms/page';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 
@@ -69,12 +66,12 @@ export default function Home() {
   //   setLoading(false);
   // };
 
-  const { transcript, listening, resetTranscript, browserSupportsSpeechRecognition } =
-    useSpeechRecognition();
+  // const { transcript, listening, resetTranscript, browserSupportsSpeechRecognition } =
+  //   useSpeechRecognition();
 
-  if (!browserSupportsSpeechRecognition) {
-    return <span>Browser doesn't support speech recognition.</span>;
-  }
+  // if (!browserSupportsSpeechRecognition) {
+  //   return <span>Browser doesn't support speech recognition.</span>;
+  // }
 
   if (initial) {
     return <div className="card h-72">Loading...</div>;
@@ -87,24 +84,24 @@ export default function Home() {
   if (user) {
     return (
       <>
-        <section className="card">
+        {/* <section className="card">
           <h2>Welcome!</h2>
           <code className="highlight">{user.role}</code>
           <Link className="button" href="/profile">
             Go to Profile
           </Link>
-          {/* <button
+          <button
             onClick={() => {
               getAudioTranslation();
             }}
           >
             bro!
-          </button> */}
+          </button>
           <button type="button" className="button-inverse" onClick={signOut}>
             Sign Out
           </button>
 
-          {/* <input type="file" accept="audio/*" onChange={handleFile} />
+          <input type="file" accept="audio/*" onChange={handleFile} />
           <button onClick={sendAudio}>Send Audio</button>
           {loading ? (
             <>Loading</>
@@ -114,7 +111,7 @@ export default function Home() {
               <TextWriter text={translateText} delay={10} />
             </>
           )}
-          )} */}
+          )}
           <div>
             <p>Microphone: {listening ? <>on</> : <>off</>}</p>
             <button onClick={SpeechRecognition.startListening}>Start</button>
@@ -122,18 +119,7 @@ export default function Home() {
             <button onClick={resetTranscript}>Reset</button>
             <p>{transcript}</p>
           </div>
-        </section>
-        <div className="d-flex justify-content-between">
-          <h2>வணக்கம் !</h2>
-          <Button
-            varient="info"
-            onClick={() => {
-              router.push('/profile');
-            }}
-          >
-            Profile
-          </Button>
-        </div>
+        </section> */}
         <Forms />
       </>
     );
