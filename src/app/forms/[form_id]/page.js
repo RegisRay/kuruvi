@@ -23,6 +23,7 @@ const Form = () => {
   const [form, setForm] = useState(null);
   const [loading, setLoading] = useState(true);
   const [modalShow, setModalShow] = useState(false);
+  const [isResponse, setIsResponse] = useState(false);
   const [modalShow_1, setModalShow_1] = useState(false);
   const [modalDetails, setModalDetails] = useState({
     title: '',
@@ -169,10 +170,20 @@ const Form = () => {
             >
               <MdOutlineDeleteOutline />
             </Button>
+            <Button
+              variant="light"
+              size="sm"
+              className="rounded shadow-sm"
+              onClick={() => {
+                setIsResponse(!isResponse);
+              }}
+            >
+              Responses
+            </Button>
           </div>
 
-          <div>
-            {form.questions.map((item, i) => {
+          {!isResponse &&
+            form.questions.map((item, i) => {
               return (
                 <section key={i}>
                   <Modal
@@ -304,7 +315,26 @@ const Form = () => {
                 </section>
               );
             })}
-          </div>
+          {isResponse && form.questions?.length > 0 && (
+            <div className="mt-4">
+              <h3>Responses</h3>
+              <div className="d-flex justify-content-between align-items-center">
+                <h5>Question</h5>
+                <h5>Answer</h5>
+              </div>
+              {form.questions.answers?.map((item, i) => {
+                return (
+                  <div
+                    key={i}
+                    className="d-flex justify-content-between align-items-center"
+                  >
+                    <p>{item.value}</p>
+                    <p>{new Date(item.created_at)}</p>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </>
       )}
     </>
