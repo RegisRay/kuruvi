@@ -1,13 +1,30 @@
 @import 'bootstrap/dist/css/bootstrap.min.css';
 
-.chart{
-    display: flex;
-    flex-direction: column;
-    width: 500px;
+.chart {
+  display: flex;
+  flex-direction: column;
+  width: 500px;
 }
 
-.chart-container{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.chart-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-bg {
+  //   height: 75vh;
+  background-image: url('https://c4.wallpaperflare.com/wallpaper/531/951/621/digital-digital-art-artwork-illustration-minimalism-hd-wallpaper-preview.jpg');
+}
+
+.login-css {
+  height: 83vh;
+  //   background-image: url('https://c4.wallpaperflare.com/wallpaper/531/951/621/digital-digital-art-artwork-illustration-minimalism-hd-wallpaper-preview.jpg');
+  //   background-size: 75vh;
+  //   background-repeat: no-repeat;
+}
+
+.split {
+  height: 100%;
+  width: 50%;
 }

@@ -13,7 +13,11 @@ import Button from 'react-bootstrap/Button';
 import Link from 'next/link';
 import { FaPencilAlt } from 'react-icons/fa';
 import { MdOutlineDeleteOutline } from 'react-icons/md';
-import { addQuestion, updateQuestion } from 'src/app/services/question/service';
+import {
+  addQuestion,
+  deleteQuestion,
+  updateQuestion,
+} from 'src/app/services/question/service';
 import { addChoice } from 'src/app/services/choice/service';
 import { deleteForm } from 'src/app/services/form/service';
 import Modal from 'react-bootstrap/Modal';
@@ -23,7 +27,6 @@ import { getText } from 'src/app/speech-test/service';
 import TextToSpeech from './speech_to_text';
 
 const Form = () => {
-
   const router = useRouter();
   const { form_id } = useParams();
   // console.log('this is form id ' + form_id);
@@ -68,7 +71,8 @@ const Form = () => {
   const addQuestionHandler = async (form_id, questionDetails) => {
     console.log(questionDetails);
     const { data, error } = await addQuestion(form_id, questionDetails);
-    setQuestionid(data.question.id);
+    setQuestionid(data.question_db.id);
+
     if (data) {
       if (questionDetails.type == 'text') {
         console.log(data);
@@ -107,13 +111,23 @@ const Form = () => {
       console.log(error);
     }
   };
-  
-  const speak = (data)=>{
+
+  const handleDeleteQuestion = async (ques_id) => {
+    const { data, error } = await deleteQuestion(ques_id);
+    if (data) {
+      console.log(data);
+    } else {
+      console.log(error);
+    }
+    getAllQuestions();
+  };
+
+  const speak = (data) => {
     let utterance = new SpeechSynthesisUtterance(data);
     let voicesArray = speechSynthesis.getVoices();
     utterance.voice = voicesArray[2];
     speechSynthesis.speak(utterance);
-  }
+  };
 
   const getAllQuestions = async () => {
     const { data, error } = await getForm(form_id);
@@ -210,7 +224,7 @@ const Form = () => {
             <button
               className="btn btn-primary mt-3"
               onClick={() => {
-                addQuestionHandler(form.id, newQuestion);
+                addQuestionHandler(form_id, newQuestion);
               }}
             >
               Add Question
@@ -420,11 +434,11 @@ const Form = () => {
                             size="sm"
                             className="rounded-circle text-danger mx-2 shadow-sm"
                             onClick={() => {
-                              deleteSurvey(form.id);
+                              handleDeleteQuestion(item.id);
                             }}
                           >
                             <MdOutlineDeleteOutline />
-                          </Button>                          
+                          </Button>
                         </OverlayTrigger>
                         {/* <button onClick={()=>{speak(item.content)}}>Speak </button> */}
                         <TextToSpeech text={item.content}/>

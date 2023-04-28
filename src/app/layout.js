@@ -6,9 +6,10 @@ import 'src/styles/globals.scss';
 
 // do not cache this layout
 export const revalidate = 0;
+
 export const metadata = {
-  title: 'Kuruvi'
-}
+  title: 'Best Place for survey',
+};
 
 const ls = League_Spartan({
   weight: '400',
@@ -29,7 +30,7 @@ export default async function RootLayout({ children }) {
       <body className={ls.className}>
         <main className="container py-3">
           {/* header */}
-          <h1 className="text-center">
+          <h1 className={accessToken != null ? 'text-center' : 'd-none'}>
             <span>Kuruvi 🐦</span>
           </h1>
           <AuthProvider accessToken={accessToken}>

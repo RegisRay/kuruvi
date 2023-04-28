@@ -103,12 +103,12 @@ export default function Home() {
     setLoading(false);
   };
 
-  const { transcript, listening, resetTranscript, browserSupportsSpeechRecognition } =
-    useSpeechRecognition();
+  // const { transcript, listening, resetTranscript, browserSupportsSpeechRecognition } =
+  //   useSpeechRecognition();
 
-  if (!browserSupportsSpeechRecognition) {
-    return <span>Browser doesn't support speech recognition.</span>;
-  }
+  // if (!browserSupportsSpeechRecognition) {
+  //   return <span>Browser doesn't support speech recognition.</span>;
+  // }
 
   if (initial) {
     return <div className="card h-72">Loading...</div>;
@@ -121,7 +121,7 @@ export default function Home() {
   if (user) {
     return (
       <>
-        <section className="card">
+        {/* <section className="card">
           <h2>Welcome!</h2>
           <code className="highlight">{user.role}</code>
           <Link className="button" href="/profile">
@@ -155,18 +155,7 @@ export default function Home() {
             <button onClick={resetTranscript}>Reset</button>
             <p>{transcript}</p>
           </div>
-        </section>
-        <div className="d-flex justify-content-between">
-          <h2>வணக்கம் !</h2>
-          <Button
-            varient="info"
-            onClick={() => {
-              router.push('/profile');
-            }}
-          >
-            Profile
-          </Button>
-        </div>
+        </section> */}
         <Forms />
       </>
     );
