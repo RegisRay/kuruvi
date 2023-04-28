@@ -14,7 +14,7 @@ export const addAnswer = async (question_id, answerDetails) => {
     method: 'post',
     url: `/api/answer?qid=${question_id}`,
     data: {
-      value: answerDetails,
+      ...answerDetails,
     },
   };
 
