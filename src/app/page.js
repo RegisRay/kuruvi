@@ -19,52 +19,52 @@ export default function Home() {
 
   const [formData, setFormData] = useState(null);
 
-  // const handleFile = async (e) => {
-  //   if (e.target.files && e.target.files[0]) {
-  //     const file = e.target.files[0];
+  const handleFile = async (e) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
 
-  //     const data = new FormData();
-  //     data.append('file', file);
-  //     data.append('model', 'whisper-1');
-  //     setFormData(data);
+      const data = new FormData();
+      data.append('file', file);
+      data.append('model', 'whisper-1');
+      setFormData(data);
 
-  //     // check if the size is less than 25MB
-  //     if (file.size > 25 * 1024 * 1024) {
-  //       alert('Please upload an audio file less than 25MB');
-  //       return;
-  //     }
-  //   }
-  // };
+      // check if the size is less than 25MB
+      if (file.size > 25 * 1024 * 1024) {
+        alert('Please upload an audio file less than 25MB');
+        return;
+      }
+    }
+  };
 
   const [convertedText, setConvertedText] = useState('');
   const [translateText, setTranslateText] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // const sendAudio = async () => {
-  //   setLoading(true);
-  //   const res = await fetch('https://api.openai.com/v1/audio/transcriptions', {
-  //     headers: {
-  //       Authorization: `Bearer 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`,
-  //     },
-  //     method: 'POST',
-  //     body: formData,
-  //   });
+  const sendAudio = async () => {
+    setLoading(true);
+    const res = await fetch('https://api.openai.com/v1/audio/transcriptions', {
+      headers: {
+        Authorization: `Bearer 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`,
+      },
+      method: 'POST',
+      body: formData,
+    });
 
-  //   const data = await res.json();
+    const data = await res.json();
 
-  //   setConvertedText(data.text);
-  //   const res1 = await fetch('https://api.openai.com/v1/audio/translations', {
-  //     headers: {
-  //       Authorization: `Bearer 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`,
-  //     },
-  //     method: 'POST',
-  //     body: formData,
-  //   });
-  //   const data1 = await res1.json();
+    setConvertedText(data.text);
+    const res1 = await fetch('https://api.openai.com/v1/audio/translations', {
+      headers: {
+        Authorization: `Bearer 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`,
+      },
+      method: 'POST',
+      body: formData,
+    });
+    const data1 = await res1.json();
 
-  //   setTranslateText(data1.text);
-  //   setLoading(false);
-  // };
+    setTranslateText(data1.text);
+    setLoading(false);
+  };
 
   const { transcript, listening, resetTranscript, browserSupportsSpeechRecognition } =
     useSpeechRecognition();

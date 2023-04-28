@@ -3,8 +3,7 @@ export const BarChart = ({ chartData }) => {
   return (
     <>
       {console.log(chartData)}
-      <div className="chart-container">
-        <h2 style={{ textAlign: 'center' }}>Response Analysis</h2>
+      <div className="chart">
         <Bar
           data={chartData}
           options={{
