@@ -1,12 +1,9 @@
 'use client';
 
-import 'regenerator-runtime/runtime';
-import { useEffect, useState } from 'react';
-const { io } = require('socket.io-client');
-import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { ReactMic } from 'react-mic';
-import { TextWriter } from '../writer';
-import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+import 'regenerator-runtime/runtime';
+const { io } = require('socket.io-client');
 
 const AudioRecorder = () => {
   const [isRecording, setIsRecording] = useState(false);
@@ -37,8 +34,6 @@ const AudioRecorder = () => {
   };
 
   const onStop = async (recordedBlob) => {
-    // let chunks = [];
-    // let blob = new Blob(chunks, { type: 'audio/webm' });
     let testAudioRecord = URL.createObjectURL(recordedBlob.blob);
     const nice = await getblob(testAudioRecord);
     console.log(nice);
@@ -78,15 +73,6 @@ const AudioRecorder = () => {
       <button onClick={stopRecording} type="button">
         Stop
       </button>
-      {/* <input type="file" accept="audio/*" onChange={handleFile} />
-      <button onClick={sendAudio}>Send Audio</button>
-      <p>{convertedText}</p>
-      <TextWriter text={convertedText} delay={10} />
-      <p>Microphone: {listening ? 'on' : 'off'}</p>
-      <button onClick={SpeechRecognition.startListening}>Start</button>
-      <button onClick={SpeechRecognition.stopListening}>Stop</button>
-      <button onClick={resetTranscript}>Reset</button>
-      <p>{transcript}</p> */}
     </>
   );
 };
