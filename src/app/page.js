@@ -66,12 +66,12 @@ export default function Home() {
   //   setLoading(false);
   // };
 
-  // const { transcript, listening, resetTranscript, browserSupportsSpeechRecognition } =
-  //   useSpeechRecognition();
+  const { transcript, listening, resetTranscript, browserSupportsSpeechRecognition } =
+    useSpeechRecognition();
 
-  // if (!browserSupportsSpeechRecognition) {
-  //   return <span>Browser doesn't support speech recognition.</span>;
-  // }
+  if (!browserSupportsSpeechRecognition) {
+    return <span>Browser doesn't support speech recognition.</span>;
+  }
 
   if (initial) {
     return <div className="card h-72">Loading...</div>;
