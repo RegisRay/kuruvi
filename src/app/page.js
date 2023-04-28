@@ -1,6 +1,6 @@
 'use client';
 
-import 'regenerator-runtime/runtime';
+import "regenerator-runtime/runtime"
 import { useRouter } from 'next/navigation';
 import { getAudioTranslation } from './service';
 
@@ -11,7 +11,7 @@ import { TextWriter } from './writer';
 import Link from 'next/link';
 import { Button } from 'react-bootstrap';
 import Forms from './forms/page';
-import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+import SpeechRecognition, {useSpeechRecognition} from 'react-speech-recognition';
 
 export default function Home() {
   const { initial, user, view, signOut } = useAuth();
@@ -65,12 +65,17 @@ export default function Home() {
   //   setLoading(false);
   // };
 
-  const { transcript, listening, resetTranscript, browserSupportsSpeechRecognition } =
-    useSpeechRecognition();
+  const {
+    transcript,
+    listening,
+    resetTranscript,
+    browserSupportsSpeechRecognition
+  } = useSpeechRecognition();
 
   if (!browserSupportsSpeechRecognition) {
     return <span>Browser doesn't support speech recognition.</span>;
   }
+
 
   if (initial) {
     return <div className="card h-72">Loading...</div>;
@@ -83,7 +88,7 @@ export default function Home() {
   if (user) {
     return (
       <>
-        <section className="card">
+        <div className="card">
           <h2>Welcome!</h2>
           <code className="highlight">{user.role}</code>
           <Link className="button" href="/profile">
@@ -111,13 +116,13 @@ export default function Home() {
             </>
           )} */}
           <div>
-            <p>Microphone: {listening ? <>on</> : <>off</>}</p>
+            <p>Microphone: {listening ? ('on') : ('off')}</p>
             <button onClick={SpeechRecognition.startListening}>Start</button>
             <button onClick={SpeechRecognition.stopListening}>Stop</button>
             <button onClick={resetTranscript}>Reset</button>
             <p>{transcript}</p>
           </div>
-        </section>
+        </div>
         <div className="d-flex justify-content-between">
           <h2>வணக்கம் !</h2>
           <Button
