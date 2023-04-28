@@ -1,5 +1,6 @@
 // view a single form
 'use client';
+import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { redirect, useParams } from 'next/navigation';
 import { getForm } from './service';
@@ -17,6 +18,7 @@ import Modal from 'react-bootstrap/Modal';
 import { IoIosAddCircleOutline } from 'react-icons/io';
 
 const Form = () => {
+  const router = useRouter();
   const { form_id } = useParams();
   // console.log('this is form id ' + form_id);
   const [show, setShow] = useState(1);
@@ -71,7 +73,7 @@ const Form = () => {
     const { data, error } = await deleteForm(form_id);
     if (data) {
       console.log(data);
-      window.location.href = '/forms';
+      router.push('/forms');
     } else {
       console.log(error);
     }

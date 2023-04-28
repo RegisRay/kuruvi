@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { useState } from 'react';
 import supabase from 'src/lib/supabase-browser';
 import Card from 'react-bootstrap/Card';
@@ -9,7 +10,6 @@ import SignOut from 'src/components/SignOut';
 import UpdatePassword from 'src/components/Auth/UpdatePassword';
 
 export default async function Profile() {
-  // const supabase = createClient();
   const router = useRouter();
   const [show, setshow] = useState(false);
   const toggle = () => setshow(!show);
@@ -19,7 +19,7 @@ export default async function Profile() {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    push('/');
+    router.push('/');
   }
 
   return (
@@ -32,15 +32,11 @@ export default async function Profile() {
             <Card.Text>
               LAST LOGIN: {new Date(user?.last_sign_in_at).toUTCString()}
             </Card.Text>
-            <Button
-              variant="primary"
-              className="me-3"
-              onClick={() => {
-                router.push('/forms');
-              }}
-            >
-              HOME
-            </Button>
+            <Link href="/forms" className="text-decoration-none link-light">
+              <Button variant="primary" className="me-3">
+                HOME
+              </Button>
+            </Link>
             <Button className="me-3" onClick={toggle}>
               Update Password
             </Button>
