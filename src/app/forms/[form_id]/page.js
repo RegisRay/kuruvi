@@ -18,6 +18,7 @@ import Modal from 'react-bootstrap/Modal';
 import { IoIosAddCircleOutline } from 'react-icons/io';
 
 const Form = () => {
+
   const router = useRouter();
   const { form_id } = useParams();
   // console.log('this is form id ' + form_id);
@@ -78,6 +79,13 @@ const Form = () => {
       console.log(error);
     }
   };
+  
+  const speak = (data)=>{
+    let utterance = new SpeechSynthesisUtterance(data);
+    let voicesArray = speechSynthesis.getVoices();
+    utterance.voice = voicesArray[2];
+    speechSynthesis.speak(utterance);
+  }
 
   const getAllQuestions = async () => {
     const { data, error } = await getForm(form_id);
@@ -308,8 +316,10 @@ const Form = () => {
                             }}
                           >
                             <MdOutlineDeleteOutline />
-                          </Button>
+                          </Button>                          
                         </OverlayTrigger>
+                        <button onClick={()=>{speak(item.content)}}>Speak </button>
+                        
                       </Card.Text>
                     </Card.Body>
                   </Card>
