@@ -111,7 +111,6 @@ export default function Home() {
               <TextWriter text={translateText} delay={10} />
             </>
           )}
-          )}
           <div>
             <p>Microphone: {listening ? ('on') : ('off')}</p>
             <button onClick={SpeechRecognition.startListening}>Start</button>
