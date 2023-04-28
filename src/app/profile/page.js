@@ -1,7 +1,7 @@
 'use client';
 
-import { redirect } from 'next/navigation';
-import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import supabase from 'src/lib/supabase-browser';
 import Card from 'react-bootstrap/Card';
@@ -10,7 +10,11 @@ import SignOut from 'src/components/SignOut';
 import UpdatePassword from 'src/components/Auth/UpdatePassword';
 
 export default async function Profile() {
-  const [show, setshow] = useState(false);
+  const { push } = useRouter();
+  const [show, setshow] = useState('');
+  useEffect(() => {
+    setshow(false);
+  }, [show]);
   const toggle = () => setshow(!show);
 
   const {
@@ -18,7 +22,7 @@ export default async function Profile() {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect('/');
+    push('/');
   }
 
   return (
