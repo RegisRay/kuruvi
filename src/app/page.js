@@ -1,22 +1,60 @@
 'use client';
 
-import "regenerator-runtime/runtime"
 import { useRouter } from 'next/navigation';
 import Button from 'react-bootstrap/Button';
 
 import Auth from 'src/components/Auth';
 import { useAuth, VIEWS } from 'src/components/AuthProvider';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { TextWriter } from './writer';
 import Link from 'next/link';
 import Forms from './forms/page';
-import SpeechRecognition, {useSpeechRecognition} from 'react-speech-recognition';
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 
 export default function Home() {
   const router = useRouter();
   const { initial, user, view, signOut } = useAuth();
 
   const [formData, setFormData] = useState(null);
+  const getblob = async (testAudioRecord) => {
+    let blobb = await fetch(testAudioRecord).then((r) => r.blob());
+    console.log(blobb);
+    return blobb;
+  };
+
+  useEffect(() => {
+    const getAudio = async () => {
+      let chunks = [];
+      let recorder;
+
+      try {
+        //wait for the stream promise to resolve
+        let stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        recorder = new MediaRecorder(stream);
+        recorder.ondataavailable = async (e) => {
+          chunks.push(e.data);
+          // if (recorder.state === 'inactive') {
+          //   let blob = new Blob(chunks, { type: 'audio/webm' });
+          //   let testAudioRecord = URL.createObjectURL(blob);
+          //   const nice = await getblob(testAudioRecord);
+          //   console.log(nice);
+          //   const data = new FormData();
+          //   data.append('file', nice, 'test.webm');
+          //   data.append('model', 'whisper-1');
+          //   sendAudio(data);
+          // }
+        };
+        recorder.start(1000);
+
+        setTimeout(() => {
+          recorder.stop();
+        }, 2000);
+      } catch (e) {
+        console.log('error getting stream', e);
+      }
+    };
+    // getAudio();
+  }, []);
 
   const handleFile = async (e) => {
     if (e.target.files && e.target.files[0]) {
@@ -39,14 +77,14 @@ export default function Home() {
   const [translateText, setTranslateText] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const sendAudio = async () => {
+  const sendAudio = async (dat) => {
     setLoading(true);
     const res = await fetch('https://api.openai.com/v1/audio/transcriptions', {
       headers: {
         Authorization: `Bearer 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`,
       },
       method: 'POST',
-      body: formData,
+      body: dat,
     });
 
     const data = await res.json();
@@ -57,7 +95,7 @@ export default function Home() {
         Authorization: `Bearer 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`,
       },
       method: 'POST',
-      body: formData,
+      body: dat,
     });
     const data1 = await res1.json();
 
@@ -111,7 +149,7 @@ export default function Home() {
             </>
           )}
           <div>
-            <p>Microphone: {listening ? ('on') : ('off')}</p>
+            <p>Microphone: {listening ? 'on' : 'off'}</p>
             <button onClick={SpeechRecognition.startListening}>Start</button>
             <button onClick={SpeechRecognition.stopListening}>Stop</button>
             <button onClick={resetTranscript}>Reset</button>

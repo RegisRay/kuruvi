@@ -1,102 +1,92 @@
-'use client'
+'use client';
 
-import { useEffect, useState } from 'react'
-const {io} = require('socket.io-client')
-import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react';
+const { io } = require('socket.io-client');
+import { useRouter } from 'next/navigation';
+import { ReactMic } from 'react-mic';
+import { TextWriter } from '../writer';
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 
 const AudioRecorder = () => {
-  const [isRecording, setIsRecording] = useState(false)
-  const [audioChunks, setAudioChunks] = useState([])
-  const [mediaRecorder, setMediaRecorder] = useState(null)
-  const {push} = useRouter();
+  const [isRecording, setIsRecording] = useState(false);
+  const [audioChunks, setAudioChunks] = useState([]);
+  const [mediaRecorder, setMediaRecorder] = useState(null);
+  const [record, setRecord] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [convertedText, setConvertedText] = useState('');
+  const [translateText, setTranslateText] = useState('');
+  const [formData, setFormData] = useState(null);
 
-  useEffect(async () => {
-    // Get user media stream
-    navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
-      // Create a new MediaRecorder object
-      const recorder = new MediaRecorder(stream)
+  const startRecording = () => {
+    setRecord(true);
+  };
 
-      // Event listener for dataavailable event
-      recorder.addEventListener('dataavailable', (event) => {
-        setAudioChunks((audioChunks) => [...audioChunks, event.data])
-      })
+  const stopRecording = () => {
+    setRecord(false);
+  };
 
-      // Event listener for stop event
-      recorder.addEventListener('stop', async () => {
-        // Combine audio chunks into a single Blob
-        const audioBlob = new Blob(audioChunks)
+  const onData = (recordedBlob) => {
+    console.log('chunk of real-time data is: ', recordedBlob);
+  };
 
-        // Convert Blob to base64 string
-        const reader = new FileReader()
-        reader.readAsDataURL(audioBlob)
-        reader.onloadend = () => {
-          const base64Data = reader.result.split(',')[1]
-        }
-        console.log(audioBlob)
-        const response = await transcribeAudio(audioBlob)
-        console.log(response)
-      })
-    
-      setMediaRecorder(recorder)
-    })
-  }, [])
+  const getblob = async (testAudioRecord) => {
+    let blobb = await fetch(testAudioRecord).then((r) => r.blob());
+    console.log(blobb);
+    return blobb;
+  };
 
-  // Start recording
-  const handleStartRecording = () => {
-    setIsRecording(true)
-    mediaRecorder.start()
-  }
+  const onStop = async (recordedBlob) => {
+    let blob = new Blob(chunks, { type: 'audio/webm' });
+    let testAudioRecord = URL.createObjectURL(recordedBlob);
+    const nice = await getblob(testAudioRecord);
+    console.log(nice);
+    const data = new FormData();
+    data.append('file', nice, 'test.webm');
+    data.append('model', 'whisper-1');
+    sendAudio(data);
+  };
 
-  // Stop recording
-  const handleStopRecording = () => {
-    setIsRecording(false)
-    mediaRecorder.stop()
-  }
-    
-async function transcribeAudio(audioData) {
-
-    // openai.api_key = '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'
-    // if (typeof audioData === "function") {
-    //   throw new Error("Invalid audio data");
-    // }
-    const ad = Buffer.from(audioData, 'base64')
-    // console.log(ad)
-    // const openai = new OpenAIApi(config)
-    try{
-      const sendData = await fetch('https://api.openai.com/v1/completions', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer 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'
-        },
-        body: JSON.stringify({
-            'model': 'davinci',
-            'prompt': `Transcribe this audio ${ad}`,
-            'max_tokens': 7,
-            'temperature': 0
-        })
+  const sendAudio = async (dat) => {
+    const res = await fetch('https://api.openai.com/v1/audio/transcriptions', {
+      headers: {
+        Authorization: `Bearer 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`,
+      },
+      method: 'POST',
+      body: dat,
     });
-      
-      const response = await sendData.text()
-      const {text} = JSON.parse(response).choices[0];
-      console.log(text.trim());
-      return text
-      
-    }
-    catch(error){
-      console.log('Error:', error)
-    }
-  }
-  return (
-    <div>
-      <button onClick={handleStartRecording} disabled={isRecording}>
-        Start recording
-      </button>
-      <button onClick={handleStopRecording} disabled={!isRecording}>
-        Stop recording
-      </button>
-    </div>
-  )
-}
 
-export default AudioRecorder
+    const data = await res.json();
+
+    setConvertedText(data.text);
+  };
+
+  return (
+    <>
+      <ReactMic
+        record={record}
+        className="sound-wave"
+        onStop={onStop}
+        onData={onData}
+        strokeColor="#000000"
+        backgroundColor="#FF4081"
+      />
+      <button onClick={startRecording} type="button">
+        Start
+      </button>
+      <button onClick={stopRecording} type="button">
+        Stop
+      </button>
+      {/* <input type="file" accept="audio/*" onChange={handleFile} />
+      <button onClick={sendAudio}>Send Audio</button>
+      <p>{convertedText}</p>
+      <TextWriter text={convertedText} delay={10} />
+      <p>Microphone: {listening ? 'on' : 'off'}</p>
+      <button onClick={SpeechRecognition.startListening}>Start</button>
+      <button onClick={SpeechRecognition.stopListening}>Stop</button>
+      <button onClick={resetTranscript}>Reset</button>
+      <p>{transcript}</p> */}
+    </>
+  );
+};
+
+export default AudioRecorder;
