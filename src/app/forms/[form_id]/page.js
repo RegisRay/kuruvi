@@ -293,7 +293,7 @@ const Form = () => {
             <Button
               variant="light"
               size="sm"
-              className="rounded-circle text-danger mx-2 shadow-sm"
+              className="rounded-circle text-light mx-2 shadow-sm"
               onClick={() => {
                 deleteSurvey(form.id);
               }}
@@ -431,7 +431,7 @@ const Form = () => {
                           <Button
                             variant="light"
                             size="sm"
-                            className="rounded-circle text-danger mx-2 shadow-sm"
+                            className="rounded-circle text-light mx-2 shadow-sm"
                             onClick={() => {
                               handleDeleteQuestion(item.id);
                             }}

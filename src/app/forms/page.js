@@ -96,7 +96,7 @@ const Forms = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-      <div className="d-flex justify-content-between">
+      <div className="text-light d-flex justify-content-between">
         <h2>வணக்கம் !</h2>
         <Button
           varient="info"
@@ -107,7 +107,7 @@ const Forms = () => {
           Profile
         </Button>
       </div>
-      <section className="container-fluid d-flex flex-column justify-content-start">
+      <section className="text-light container-fluid d-flex flex-column justify-content-start">
         <Card
           style={{ width: '20rem', height: '10rem' }}
           className="bg-success"
@@ -161,7 +161,7 @@ const Forms = () => {
                           <Button
                             variant="light"
                             size="sm"
-                            className="rounded-circle text-danger mx-2 shadow-sm"
+                            className="rounded-circle text-light mx-2 shadow-sm"
                             onClick={() => {
                               deleteSurvey(form.id);
                             }}

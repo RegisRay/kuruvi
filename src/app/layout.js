@@ -28,7 +28,7 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={ls.className}>
-        <main className="container py-3">
+        <main className="bg-gradient py-3">
           {/* header */}
           <h1 className={accessToken != null ? 'text-center' : 'd-none'}>
             <span>Kuruvi 🐦</span>
@@ -39,9 +39,11 @@ export default async function RootLayout({ children }) {
           </AuthProvider>
           {/* footer */}
           <footer>
-            <div className="d-flex flex-column justify-content-center align-items-center">
+            <div className="text-light d-flex flex-column justify-content-center align-items-center">
               <hr className="w-50" />
-              <small>Made with ❤️ by team Survey Kuruvi.</small>
+              <small>
+                Made with <s>❤️</s> keyboard by team Incompletes.
+              </small>
             </div>
           </footer>
         </main>

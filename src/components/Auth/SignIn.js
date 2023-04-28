@@ -5,6 +5,7 @@ import cn from 'classnames';
 import { Formik, Field, Form } from 'formik';
 import Button from 'react-bootstrap/Button';
 import * as Yup from 'yup';
+import CarouselFadeExample from '../carousel';
 
 import { useAuth, VIEWS } from 'src/components/AuthProvider';
 import supabase from 'src/lib/supabase-browser';
@@ -36,9 +37,11 @@ const SignIn = () => {
 
   return (
     <section className="d-flex login-css">
-      <div className="split login-bg"></div>
-      <div className="d-flex flex-column justify-content-center align-items-center split">
-        <h2 className="mb-3 w-full text-center">Kuruvi 🐦</h2>
+      <div className="col-7 me-3">
+        <CarouselFadeExample />
+      </div>
+      <div className="text-light d-flex flex-column justify-content-center align-items-center col-4 rounded-4 glass-css ms-5">
+        <h2 className="mb-1 w-full text-center">Kuruvi 🐦</h2>
         <h2 className="mt-3 w-full text-center">SIGN IN</h2>
         <Formik
           initialValues={{
@@ -50,13 +53,13 @@ const SignIn = () => {
         >
           {({ errors, touched }) => (
             <Form className="column d-grid w-full gap-3" style={{ width: '25rem' }}>
-              <label htmlFor="email" className="fs-5">
-                Email
-              </label>
-              <div className="d-flex d-grid gap-3">
+              <div className="d-flex flex-column d-grid gap-3 px-3">
+                <label htmlFor="email" className="fs-5">
+                  Email
+                </label>
                 <Field
                   className={cn(
-                    'form-control input',
+                    'form-control input rounded-pill',
                     errors.email && touched.email && 'bg-red-50'
                   )}
                   id="email"
@@ -65,17 +68,17 @@ const SignIn = () => {
                   type="email"
                 />
                 {errors.email && touched.email ? (
-                  <div className="text-danger mt-2">{errors.email}</div>
+                  <div className="text-light mt-2">{errors.email}</div>
                 ) : null}
               </div>
 
-              <label htmlFor="email" className="fs-5">
-                Password
-              </label>
-              <div className="d-flex d-grid gap-3">
+              <div className="d-flex flex-column d-grid gap-3 px-3">
+                <label htmlFor="email" className="fs-5">
+                  Password
+                </label>
                 <Field
                   className={cn(
-                    'input form-control',
+                    'input form-control rounded-pill',
                     errors.password && touched.password && 'bg-red-50'
                   )}
                   id="password"
@@ -83,10 +86,14 @@ const SignIn = () => {
                   type="password"
                 />
                 {errors.password && touched.password ? (
-                  <div className="text-danger">{errors.password}</div>
+                  <div className="text-light">{errors.password}</div>
                 ) : null}
               </div>
-              <Button className="button-inverse w-full" type="submit" variant="success">
+              <Button
+                className="button-inverse mt-3 w-full"
+                type="submit"
+                variant="success"
+              >
                 Submit
               </Button>
               <Button
@@ -105,7 +112,7 @@ const SignIn = () => {
               >
                 Don&apos;t have an account? Sign Up.
               </Button>
-              {errorMsg && <div className="text-danger">{errorMsg}</div>}
+              {errorMsg && <div className="text-light">{errorMsg}</div>}
             </Form>
           )}
         </Formik>
