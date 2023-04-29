@@ -14,11 +14,14 @@ import { createForm, deleteForm, getAllForms } from '../services/form/service';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Spinner from '@/components/Spinner';
+import ToastBox from '@/components/Toast';
 
 const Forms = () => {
   const router = useRouter();
   const [showmodal, setShowmodal] = useState(false);
   const [showShareModal, setShareModal] = useState(false);
+  const [msg, setMsg] = useState('');
+  const [showToast, setShowToast] = useState(false);
   const [details, setDetails] = useState({
     title: null,
     description: null,
@@ -54,6 +57,8 @@ const Forms = () => {
     if (data) {
       console.log(data);
       getForms();
+      setMsg(data.message);
+      setShowToast(!showToast);
       setShowmodal(false);
     }
   };
@@ -84,9 +89,13 @@ const Forms = () => {
     const { data, error } = await deleteForm(id);
     if (data) {
       console.log(data);
+      setMsg(data.message);
+      setShowToast(!showToast);
       getForms();
     } else {
       console.log(error);
+      setMsg(data.message);
+      setShowToast(!showToast);
     }
   };
 
@@ -99,6 +108,7 @@ const Forms = () => {
 
   return (
     <>
+      <ToastBox mainMsg={msg} show={showToast}/>
       <Modal show={showmodal} onHide={setShowmodal}>
         <Modal.Header closeButton>
           <Modal.Title>Create your survey</Modal.Title>
