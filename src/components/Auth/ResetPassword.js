@@ -36,7 +36,7 @@ const ResetPassword = () => {
       <div className="col-7 me-3">
         <CarouselFadeExample />
       </div>
-      <div className="text-light d-flex flex-column justify-content-center align-items-center col-4 rounded-4 glass-css ms-5">
+      <div className=" d-flex flex-column justify-content-center align-items-center col-4 rounded-4 glass-css ms-5">
         <h2 className="mt-3 w-full text-center">Forgot Password</h2>
         <Formik
           initialValues={{
@@ -61,7 +61,7 @@ const ResetPassword = () => {
                 type="email"
               />
               {errors.email && touched.email ? (
-                <div className="text-light">{errors.email}</div>
+                <div className="">{errors.email}</div>
               ) : null}
               <Button className="button-inverse w-full" type="submit">
                 Send Instructions
@@ -74,8 +74,8 @@ const ResetPassword = () => {
               >
                 Remember your password? Sign In.
               </Button>
-              {errorMsg && <div className="text-light text-center">{errorMsg}</div>}
-              {successMsg && <div className="text-light text-center">{successMsg}</div>}
+              {errorMsg && <div className=" text-center">{errorMsg}</div>}
+              {successMsg && <div className=" text-center">{successMsg}</div>}
             </Form>
           )}
         </Formik>

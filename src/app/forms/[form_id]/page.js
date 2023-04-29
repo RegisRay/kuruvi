@@ -208,7 +208,7 @@ const Form = () => {
               className="form-control mt-3"
               value={newQuestion.content}
               onChange={(e) =>
-                setNewQuestion( { ...newQuestion, content: e.target.value })
+                setNewQuestion({ ...newQuestion, content: e.target.value })
               }
             />
             <label>Question Type</label>
@@ -294,12 +294,12 @@ const Form = () => {
             <Button
               variant="light"
               size="sm"
-              className="rounded-circle text-light mx-2 shadow-sm"
+              className="rounded-circle text-light text-danger mx-2 shadow-sm"
               onClick={() => {
                 deleteSurvey(form.id);
               }}
             >
-              <MdOutlineDeleteOutline />
+              <MdOutlineDeleteOutline className="text-danger" />
             </Button>
             <Button
               variant="light"
@@ -432,7 +432,7 @@ const Form = () => {
                           <Button
                             variant="light"
                             size="sm"
-                            className="rounded-circle text-light mx-2 shadow-sm"
+                            className="rounded-circle text-danger mx-2 shadow-sm"
                             onClick={() => {
                               handleDeleteQuestion(item.id);
                             }}
@@ -441,8 +441,7 @@ const Form = () => {
                           </Button>
                         </OverlayTrigger>
                         {/* <button onClick={()=>{speak(item.content)}}>Speak </button> */}
-                        <TextToSpeech text={item.content}/>
-                        
+                        <TextToSpeech text={item.content} />
                       </Card.Text>
                     </Card.Body>
                   </Card>
@@ -470,7 +469,7 @@ const Form = () => {
                           >
                             <p>{ans.value}</p>
                             {/* <button onClick={()=>{speak(ans.value)}}>Speak </button> */}
-                            <TextToSpeech text={ans.value}/>
+                            <TextToSpeech text={ans.value} />
                             {/* <p>{ans.content}</p> */}
                           </div>
                         </>

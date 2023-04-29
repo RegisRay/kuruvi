@@ -2,34 +2,34 @@
 @import './variables';
 
 //bg-color
-.bg-black {
-  background-color: $bg-primary;
-}
-.bg-tertiary {
-  background-color: $bg-tertiary;
-}
-.bg-white {
-  background-color: $fg-primary;
-}
-.bg-gradient {
-  background: rgb(28, 63, 181) !important;
-  background: linear-gradient(
-    90deg,
-    rgba(28, 63, 181, 1) 0%,
-    rgba(24, 189, 214, 1) 16%,
-    rgba(11, 122, 182, 1) 36%,
-    rgba(104, 148, 224, 1) 75%,
-    rgba(56, 157, 143, 1) 100%
-  ) !important;
-}
-.glass-css {
-  background: rgba(3, 3, 3, 0.5);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-  backdrop-filter: blur(0px);
-  -webkit-backdrop-filter: blur(0px);
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-}
+// .bg-black {
+//   background-color: $bg-primary;
+// }
+// .bg-tertiary {
+//   background-color: $bg-tertiary;
+// }
+// .bg-white {
+//   background-color: $fg-primary;
+// }
+// .bg-gradient {
+//   background: rgb(28, 63, 181) !important;
+//   background: linear-gradient(
+//     90deg,
+//     rgba(28, 63, 181, 1) 0%,
+//     rgba(24, 189, 214, 1) 16%,
+//     rgba(11, 122, 182, 1) 36%,
+//     rgba(104, 148, 224, 1) 75%,
+//     rgba(56, 157, 143, 1) 100%
+//   ) !important;
+// }
+// .glass-css {
+//   background: rgba(3, 3, 3, 0.5);
+//   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+//   backdrop-filter: blur(0px);
+//   -webkit-backdrop-filter: blur(0px);
+//   border-radius: 10px;
+//   border: 1px solid rgba(255, 255, 255, 0.18);
+// }
 //other-css
 .chart {
   display: flex;

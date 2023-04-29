@@ -40,7 +40,7 @@ const SignIn = () => {
       <div className="col-7 me-3">
         <CarouselFadeExample />
       </div>
-      <div className="text-light d-flex flex-column justify-content-center align-items-center col-4 rounded-4 glass-css ms-5">
+      <div className=" d-flex flex-column justify-content-center align-items-center col-4 rounded-4 glass-css ms-5">
         <h2 className="mb-1 w-full text-center">Kuruvi 🐦</h2>
         <h2 className="mt-3 w-full text-center">SIGN IN</h2>
         <Formik
@@ -68,7 +68,7 @@ const SignIn = () => {
                   type="email"
                 />
                 {errors.email && touched.email ? (
-                  <div className="text-light mt-2">{errors.email}</div>
+                  <div className=" mt-2">{errors.email}</div>
                 ) : null}
               </div>
 
@@ -86,7 +86,7 @@ const SignIn = () => {
                   type="password"
                 />
                 {errors.password && touched.password ? (
-                  <div className="text-light">{errors.password}</div>
+                  <div className="">{errors.password}</div>
                 ) : null}
               </div>
               <Button
@@ -112,7 +112,7 @@ const SignIn = () => {
               >
                 Don&apos;t have an account? Sign Up.
               </Button>
-              {errorMsg && <div className="text-light">{errorMsg}</div>}
+              {errorMsg && <div className="">{errorMsg}</div>}
             </Form>
           )}
         </Formik>
